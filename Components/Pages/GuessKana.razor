@@ -1,0 +1,30 @@
+﻿@page "/GuessKana"
+@using System.Linq
+@using ApprentissageKana.Components
+
+<div class="row">
+    <div class="col-12 pt-3 text-center">
+        <h1>Devine les kanas</h1>
+    </div>
+
+    <div class="col-12 text-center bigKana">
+        @(toGuess.unicodeHiragana)
+    </div>
+</div>
+
+@code {
+    private List<Kana> listKanaToGuess = new List<Kana>();
+    private Kana toGuess = new Kana ();
+
+    protected override async Task OnInitializedAsync()
+    {
+        listKanaToGuess = Kana.initialiseAllKana();
+        generateKanaToGuess();
+    }
+
+    private void generateKanaToGuess()
+    {
+        Random rand = new Random();
+        toGuess = listKanaToGuess.ElementAt(rand.Next(listKanaToGuess.Count));
+    }
+}

@@ -1,0 +1,24 @@
+﻿<tr class="@FontName text-center table table-primary">
+    <th scope="row" class="normalFontSize">@FontName</th>
+    @foreach (Kana k in @getAllHiragana)
+    {
+        <th>@k.unicodeHiragana</th>
+    }
+</tr>
+<tr class="@FontName text-center">
+    <th scope="row" class="normalFontSize">@FontName</th>
+    @foreach (Kana k in @getAllHiragana)
+    {
+        <th>@k.unicodeKatakana</th>
+    }
+</tr>
+
+@code {
+    [Parameter]
+    public List<Kana> getAllHiragana { get; set; }
+
+    [Parameter]
+    public String FontName { get; set; }
+
+
+}

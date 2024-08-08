@@ -9,12 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.Configure<WebEncoderOptions>(options =>
-{
-    options.TextEncoderSettings = new TextEncoderSettings(
-        UnicodeRanges.All);
-});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

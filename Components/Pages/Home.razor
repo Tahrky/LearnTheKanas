@@ -2,149 +2,35 @@
 @using System.Linq
 @using ApprentissageKana.Components
 
-<PageTitle>Apprendre les kanas</PageTitle>
-<h1>Devinez les kanas !</h1>
+<div class="row">
+    <PageTitle>Apprendre les kanas</PageTitle>
 
-<style>
-    @@font-face {
-        font-family: NotoSansJP;
-        src: url('../Fonts/NotoSansJP-Regular.ttf') format('truetype');
-    }
+    <div class="col-12 pt-3 text-center">
+        <h1>Tableau récapitulatif de toutes les polices</h1>
+    </div>
 
-    .notoSansJP {
-        font-family: NotoSansJP;
-        font-size: 30px;
-    }
+    <div class="col-1" />
+    <div class="col-10 pt-3 table-responsive">
+        <table class="table table-hover">
+            <tr class="notoSansJP text-center" style="font-weight: bold;">
+                <th scope="col" class="normalFontSize">Nom de la police</th>
+                @foreach (Kana k in getAllHiragana)
+                {
+                    <th scope="col">@k.nom</th>
+                }
+            </tr>
 
-    @@font-face {
-        font-family: NotoSerifJP;
-        src: url('../Fonts/NotoSerifJP-Regular.ttf') format('truetype');
-    }
-
-    .notoSerifJP {
-        font-family: NotoSerifJP;
-        font-size: 30px;
-    }
-
-    @@font-face {
-        font-family: MPLUSRounded;
-        src: url('../Fonts/MPLUSRounded1c-Regular.ttf') format('truetype');
-    }
-
-    .MPLUSRounded {
-        font-family: MPLUSRounded;
-        font-size: 30px;
-    }
-
-    @@font-face {
-        font-family: RampartOne;
-        src: url('../Fonts/RampartOne-Regular.ttf') format('truetype');
-    }
-
-    .RampartOne {
-        font-family: RampartOne;
-        font-size: 30px;
-    }
-
-    @@font-face {
-        font-family: Kasei;
-        src: url('../Fonts/KaseiDecol-Regular.ttf') format('truetype');
-    }
-
-    .Kasei {
-        font-family: Kasei;
-        font-size: 30px;
-    }
-
-    @@font-face {
-        font-family: DelaGothicOne;
-        src: url('../Fonts/DelaGothicOne-Regular.ttf') format('truetype');
-    }
-
-    .DelaGothicOne {
-        font-family: DelaGothicOne;
-        font-size: 30px;
-    }
-
-    @@font-face {
-        font-family: DotGothic16;
-        src: url('../Fonts/DotGothic16-Regular.ttf') format('truetype');
-    }
-
-    .DotGothic16 {
-        font-family: DotGothic16;
-        font-size: 30px;
-    }
-
-    @@font-face {
-        font-family: KiwiMaru;
-        src: url('../Fonts/KiwiMaru-Regular.ttf') format('truetype');
-    }
-
-    .KiwiMaru {
-        font-family: KiwiMaru;
-        font-size: 30px;
-    }
-</style>
-
-<div class="notoSansJP">
-    @foreach (Kana k in Kana.initialiseAllKana())
-    {
-        @k.unicodeHiragana
-    }
-</div>
-
-<div class="notoSerifJP">
-    @foreach (Kana k in Kana.initialiseAllKana())
-    {
-        @k.unicodeHiragana
-    }
-</div>
-
-<div class="MPLUSRounded">
-    @foreach (Kana k in Kana.initialiseAllKana())
-    {
-        @k.unicodeHiragana
-    }
-</div>
-
-<div class="RampartOne">
-    @foreach (Kana k in Kana.initialiseAllKana())
-    {
-        @k.unicodeHiragana
-    }
-</div>
-
-<div class="Kasei">
-    @foreach (Kana k in Kana.initialiseAllKana())
-    {
-        @k.unicodeHiragana
-    }
-</div>
-
-<div class="DelaGothicOne">
-    @foreach (Kana k in Kana.initialiseAllKana())
-    {
-        @k.unicodeHiragana
-    }
-</div>
-
-<div class="DotGothic16">
-    @foreach (Kana k in Kana.initialiseAllKana())
-    {
-        @k.unicodeHiragana
-    }
-</div>
-
-<div class="KiwiMaru">
-    @foreach (Kana k in Kana.initialiseAllKana())
-    {
-        @k.unicodeHiragana
-    }
+            @foreach (string fontName in ApprentissageKana.Components.Utils.Globales.AllFonts)
+            {
+                <ApprentissageKana.Components.Pages.Composants.DisplayFullTabOfKanas FontName="@fontName" getAllHiragana="@getAllHiragana" />
+            }
+        </table>
+    </div>
+    <div class="col-1" />
 </div>
 
 @code {
-    private List<Kana> getAllHiragana;
+    private List<Kana> getAllHiragana = new List<Kana> ();
 
     protected override async Task OnInitializedAsync()
     {

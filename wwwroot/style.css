@@ -1,0 +1,186 @@
+﻿@font-face {
+    font-family: NotoSansJP;
+    src: url('../Fonts/NotoSansJP-Regular.ttf') format('truetype');
+}
+
+.notoSansJP {
+    font-family: NotoSansJP;
+    font-size: 20px;
+}
+
+@font-face {
+    font-family: NotoSerifJP;
+    src: url('../Fonts/NotoSerifJP-Regular.ttf') format('truetype');
+}
+
+.notoSerifJP {
+    font-family: NotoSerifJP;
+    font-size: 30px;
+}
+
+@font-face {
+    font-family: MPLUSRounded;
+    src: url('../Fonts/MPLUSRounded1c-Regular.ttf') format('truetype');
+}
+
+.MPLUSRounded {
+    font-family: MPLUSRounded;
+    font-size: 30px;
+}
+
+@font-face {
+    font-family: RampartOne;
+    src: url('../Fonts/RampartOne-Regular.ttf') format('truetype');
+}
+
+.RampartOne {
+    font-family: RampartOne;
+    font-size: 30px;
+}
+
+@font-face {
+    font-family: Kasei;
+    src: url('../Fonts/KaseiDecol-Regular.ttf') format('truetype');
+}
+
+.Kasei {
+    font-family: Kasei;
+    font-size: 30px;
+}
+
+@font-face {
+    font-family: DelaGothicOne;
+    src: url('../Fonts/DelaGothicOne-Regular.ttf') format('truetype');
+}
+
+.DelaGothicOne {
+    font-family: DelaGothicOne;
+    font-size: 30px;
+}
+
+@font-face {
+    font-family: DotGothic16;
+    src: url('../Fonts/DotGothic16-Regular.ttf') format('truetype');
+}
+
+.DotGothic16 {
+    font-family: DotGothic16;
+    font-size: 30px;
+}
+
+@font-face {
+    font-family: KiwiMaru;
+    src: url('../Fonts/KiwiMaru-Regular.ttf') format('truetype');
+}
+
+.KiwiMaru {
+    font-family: KiwiMaru;
+    font-size: 30px;
+}
+
+@font-face {
+    font-family: HachiMaruPop;
+    src: url('../Fonts/HachiMaruPop-Regular.ttf') format('truetype');
+}
+
+.HachiMaruPop {
+    font-family: HachiMaruPop;
+    font-size: 30px;
+}
+
+@font-face {
+    font-family: KaiseiHarunoUmi;
+    src: url('../Fonts/KaiseiHarunoUmi-Regular.ttf') format('truetype');
+}
+
+.KaiseiHarunoUmi {
+    font-family: KaiseiHarunoUmi;
+    font-size: 30px;
+}
+
+@font-face {
+    font-family: NewTegomin;
+    src: url('../Fonts/NewTegomin-Regular.ttf') format('truetype');
+}
+
+.NewTegomin {
+    font-family: NewTegomin;
+    font-size: 30px;
+}
+
+@font-face {
+    font-family: ReggaeOne;
+    src: url('../Fonts/ReggaeOne-Regular.ttf') format('truetype');
+}
+
+.ReggaeOne {
+    font-family: ReggaeOne;
+    font-size: 30px;
+}
+
+@font-face {
+    font-family: YujiBoku;
+    src: url('../Fonts/YujiBoku-Regular.ttf') format('truetype');
+}
+
+.YujiBoku {
+    font-family: YujiBoku;
+    font-size: 30px;
+}
+
+@font-face {
+    font-family: YujiMai;
+    src: url('../Fonts/YujiMai-Regular.ttf') format('truetype');
+}
+
+.YujiMai {
+    font-family: YujiMai;
+    font-size: 30px;
+}
+
+@font-face {
+    font-family: ZenAntique;
+    src: url('../Fonts/ZenAntique-Regular.ttf') format('truetype');
+}
+
+.ZenAntique {
+    font-family: ZenAntique;
+    font-size: 30px;
+}
+
+@font-face {
+    font-family: ZenKurenaido;
+    src: url('../Fonts/ZenKurenaido-Regular.ttf') format('truetype');
+}
+
+.ZenKurenaido {
+    font-family: ZenKurenaido;
+    font-size: 30px;
+}
+
+.normalFontSize {
+    font-size: 18px;
+}
+
+.bigKana {
+    font-size: 130px;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid #69899F;
+}
+
+table tr {
+    border-collapse: collapse;
+    border: 1px solid #69899F;
+}
+
+table th {
+    border-collapse: collapse;
+    border: 1px solid #69899F;
+}
+
+.bg-purple {
+    background-color: var(--bs-purple);
+}
