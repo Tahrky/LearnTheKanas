@@ -1,6 +1,7 @@
 ﻿@page "/GuessKana"
 @using System.Linq
 @using ApprentissageKana.Components
+@using Microsoft.AspNetCore.Components;
 
 <div class="row">
     <div class="col-12 pt-3 text-center">
@@ -10,15 +11,60 @@
     <div class="col-12 text-center bigKana">
         @(toGuess.unicodeHiragana)
     </div>
+
+    <div class="row">
+        <div class="col-4" />
+        <div class="col-4">
+            <div class="input-group input-group-lg">
+                <span class="input-group-text" id="inputGroup-sizing-lg">Kana</span>
+                <input @bind=KanaToGuess type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+            </div>
+        </div>
+        <div class="col-4" />
+    </div>
+
+    @if (lastGuessWas != null)
+    {
+        <div class="row">
+            <div class="col-4" />
+            <div class="col-4 @statusToDisplay">
+                @if (status == 1)
+                {
+                    <div>Bravo !</div>
+                }
+                else if (status == 2)
+                {
+                    <div>Erreur !</div>
+                }
+                @lastGuessWas
+            </div>
+            <div class="col-4" />
+        </div>
+    }
+
+    <div class="row pt-3">
+        <div class="col-4" />
+        <div class="col-4 d-grid gap-3 d-md-block">
+            <button class="btn btn-primary" @onclick="Help">Aide</button>
+            <button class="btn btn-primary" @onclick="Skip">Passer</button>
+            <button class="btn btn-primary" @onclick="Submit">Valider</button>
+        </div>
+        <div class="col-4" />
+    </div>
 </div>
 
 @code {
     private List<Kana> listKanaToGuess = new List<Kana>();
     private Kana toGuess = new Kana ();
+    private string KanaToGuess { get; set; }
+    private string lastGuessWas { get; set; }
+    private int status { get; set; }
+    private string statusToDisplay { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         listKanaToGuess = Kana.initialiseAllKana();
+        status = 0;
         generateKanaToGuess();
     }
 
@@ -26,5 +72,37 @@
     {
         Random rand = new Random();
         toGuess = listKanaToGuess.ElementAt(rand.Next(listKanaToGuess.Count));
+    }
+
+    public void Help()
+    {
+        status = 0;
+        lastGuessWas = toGuess.nom;
+        generateKanaToGuess();
+    }
+
+    public void Skip()
+    {
+        status = 0;
+        lastGuessWas = toGuess.nom;
+        generateKanaToGuess();
+    }
+
+    public void Submit()
+    {
+        if (!String.IsNullOrEmpty(KanaToGuess))
+            if (toGuess.nom.ToLower().Equals(KanaToGuess.ToLower()))
+            {
+                status = 1;
+                statusToDisplay = "alert alert-success";
+            }
+            else
+            {
+                status = 2;
+                statusToDisplay = "alert alert-warning";
+            }
+
+        lastGuessWas = toGuess.nom;
+        generateKanaToGuess();
     }
 }
