@@ -1,7 +1,4 @@
 using ApprentissageKana.Components;
-using Microsoft.Extensions.WebEncoders;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
 
 var builder = WebApplication.CreateBuilder(args);
 

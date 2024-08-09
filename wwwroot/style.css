@@ -39,11 +39,11 @@
 }
 
 @font-face {
-    font-family: Kasei;
-    src: url('../Fonts/KaseiDecol-Regular.ttf') format('truetype');
+    font-family: Kaisei;
+    src: url('../Fonts/KaiseiDecol-Regular.ttf') format('truetype');
 }
 
-.Kasei {
+.Kaisei {
     font-family: Kasei;
     font-size: 30px;
 }

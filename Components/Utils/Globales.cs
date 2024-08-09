@@ -8,7 +8,7 @@
             "notoSerifJP",
             "MPLUSRounded",
             "RampartOne",
-            "Kasei",
+            "Kaisei",
             "DelaGothicOne",
             "DotGothic16",
             "KiwiMaru",
