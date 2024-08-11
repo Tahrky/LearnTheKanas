@@ -10,111 +10,180 @@
     </div>
 
     <div class="col-12 text-center bigKana">
-        @(toGuess.unicodeHiragana)
+        @if (toGuess.kanaEnum == KanaEnum.Hiragana)
+        {
+            toGuess.texteAAfficher = toGuess.unicodeHiragana;
+        }
+        else if (toGuess.kanaEnum == KanaEnum.Katakana)
+        {
+            toGuess.texteAAfficher = toGuess.unicodeKatakana;
+        }
+        @(toGuess.texteAAfficher)
     </div>
 
     <div class="row">
         <div class="col-4" />
         <div class="col-4">
-            <div class="input-group input-group-lg">
-                <span class="input-group-text" id="inputGroup-sizing-lg">Kana</span>
-                <input @onkeyup="PressKey" @bind=KanaToGuess type="text" class="form-control"
-                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-            </div>
-        </div>
-        <div class="col-4" />
-    </div>
-
-    <div class="row pt-3">
-        <div class="col-4" />
-        <div class="col-4">
             <div class="row">
+                <div class="col-12 input-group input-group-lg">
+                    <span class="input-group-text" id="inputGroup-sizing-lg">Kana</span>
+                    <input @onkeyup="PressKey" @bind=kanaToGuess type="text" class="form-control"
+                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                </div>
+            </div>
+
+            <div class="row pt-3">
                 <div class="col-6">
                     <div class="input-group input-group-lg">
                         <span class="input-group-text" id="inputGroup-sizing-lg">Kanas trouvés</span>
-                        <input readonly @bind=compteurDePoint type="text" class="form-control" 
-                            aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                        <input readonly @bind=compteurDePoint type="text" class="form-control"
+                                aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="input-group input-group-lg">
                         <span class="input-group-text" id="inputGroup-sizing-lg">Tentatives</span>
-                        <input readonly @bind=compteurTotal type="text" class="form-control" 
-                            aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                        <input readonly @bind=compteurTotal type="text" class="form-control"
+                                aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-4" />
-    </div>
 
-    @if (lastGuessWas != null)
-    {
-        <div class="row pt-3">
-            <div class="col-4" />
-            <div class="col-4 @statusToDisplay">
-                @if (status == 1)
-                {
-                    <div>Bravo !</div>
-                }
-                else if (status == 2)
-                {
-                    <div>Erreur !</div>
-                }
-                Le kana précédent était @lastGuessWas.unicodeHiragana : @lastGuessWas.nom
-            </div>
-            <div class="col-4" />
-        </div>
-    }
+            @if (lastGuessWas != null)
+            {
+                <div class="row pt-3">
+                    <div class="col-12 pb-0">
+                        <div class="@statusToDisplay h-100 ">
+                            <div class="row h-100">
+                                <span class="col-12 align-self-center">
+                                    @(textToRender = String.Empty)
+                                    @if (status == 1)
+                                    {
+                                        textToRender = "Bravo!";
+                                    }
+                                    else if (status == 2)
+                                    {
+                                        textToRender = "Erreur!";
+                                    }
+                                    @(textToRender += " Le kana précédent était " + lastGuessWas.texteAAfficher + " : " + lastGuessWas.nom)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
 
-    <div class="row pt-3">
-        <div class="col-4" />
-        <div class="col-4 row">
-            <div class="col-12 col-md-4">
-                <button class="btn btn-primary w-100" @onclick="Help">Aide</button>
-            </div>
-            <div class="col-12 col-md-4">
-                <button class="btn btn-primary w-100" @onclick="Skip">Passer</button>
-            </div>
-            <div class="col-12 col-md-4">
-                <button class="btn btn-primary w-100" @onclick="Submit">Valider</button>
+            <div class="row pt-3">
+                <div class="col-12 col-md-4">
+                    <button class="btn btn-primary w-100" @onclick="Help">Aide</button>
+                </div>
+                <div class="col-12 col-md-4">
+                    <button class="btn btn-primary w-100" @onclick="Skip">Passer</button>
+                </div>
+                <div class="col-12 col-md-4">
+                    <button class="btn btn-primary w-100" @onclick="Submit">Valider</button>
+                </div>
             </div>
         </div>
-        <div class="col-4" />
+        <div class="col-4">
+            <div class="form-check">
+                <input @onchange="onChangeHiragana" class="form-check-input" type="checkbox" value="" id="flexCheckHiragana" checked>
+                <label class="form-check-label" for="flexCheckHiragana">
+                    Hiragana
+                </label>
+            </div>
+            <div class="form-check">
+                <input @onchange="onChangeKatakana" class="form-check-input" type="checkbox" value="" id="flexCheckKatakana" checked>
+                <label class="form-check-label" for="flexCheckKatakana">
+                    Katakana
+                </label>
+            </div>
+        </div>
     </div>
 </div>
 
 @code {
-    private List<Kana> listKanaToGuess = new List<Kana>();
-    private Kana toGuess = new Kana ();
-    private string KanaToGuess { get; set; } = String.Empty;
+    private List<Kana> listHiraganaToGuess = new List<Kana>();
+    private List<Kana> listKatakanaToGuess = new List<Kana>();
     private Kana? lastGuessWas { get; set; }
+    private Kana toGuess = new Kana ();
+
+    // Récupère les informations que l’utilisateur a saisi
+    private string kanaToGuess { get; set; } = String.Empty;
     private int status { get; set; } = 0;
     private string statusToDisplay { get; set; } = String.Empty;
+
+    // Permet d’avoir une petite trace des points engrengés sur la session
     private int compteurDePoint { get; set; }
     private int compteurTotal { get; set; }
 
+    // Permet d’afficher le texte à l’utilisateur
+    private string textToRender { get; set; } = String.Empty;
+
+    bool hiragana { get; set; } = true;
+    bool katakana { get; set; } = true;
+
+
     protected override async Task OnInitializedAsync()
     {
-        listKanaToGuess = Kana.initialiseAllKana();
+        listHiraganaToGuess = Kana.initialiseAllKana();
+        listKatakanaToGuess = Kana.initialiseAllKana();
         lastGuessWas = null;
+        generateKanaToGuess();
+    }
+
+    private void onChangeHiragana()
+    {
+        hiragana = !hiragana;
+        generateKanaToGuess();
+    }
+
+    private void onChangeKatakana()
+    {
+        katakana = !katakana;
         generateKanaToGuess();
     }
 
     private void generateKanaToGuess()
     {
         Random rand = new Random();
-        toGuess = listKanaToGuess.ElementAt(rand.Next(listKanaToGuess.Count));
+
+        if (listHiraganaToGuess.Count == 0)
+            listHiraganaToGuess = Kana.initialiseAllKana();
+        
+        if (listKatakanaToGuess.Count == 0)
+            listKatakanaToGuess = Kana.initialiseAllKana();
+
+        if (hiragana && katakana)
+        {
+            KanaEnum resultEnum = (KanaEnum)rand.Next(2);
+
+            if (resultEnum == KanaEnum.Hiragana)
+                updateGuess(ref listHiraganaToGuess, resultEnum);
+            else if (resultEnum == KanaEnum.Katakana)
+                updateGuess(ref listKatakanaToGuess, resultEnum);
+        }
+        else if (hiragana && !katakana)
+            updateGuess(ref listHiraganaToGuess, KanaEnum.Hiragana);
+        else if (katakana && !hiragana)
+            updateGuess(ref listKatakanaToGuess, KanaEnum.Katakana);
+    }
+
+    public void updateGuess(ref List<Kana> listKana, KanaEnum resultEnum)
+    {
+        Random rand = new Random();
+        toGuess = listKana.ElementAt(rand.Next(listKana.Count));
+        listKana = listKana.Where(x => x.GetHashCode() != toGuess.GetHashCode()).ToList();
+        toGuess.kanaEnum = resultEnum;
     }
 
     public void Help()
     {
-        
+
     }
 
     public void Skip()
     {
-        status = 0;
         resetInput();
         lastGuessWas = toGuess;
         generateKanaToGuess();
@@ -122,10 +191,10 @@
 
     public void Submit()
     {
-        if (!String.IsNullOrEmpty(KanaToGuess))
+        if (!String.IsNullOrEmpty(kanaToGuess))
         {
             compteurTotal = compteurTotal + 1;
-            if (toGuess.nom.ToLower().Equals(KanaToGuess.ToLower()))
+            if (toGuess.nom.ToLower().Equals(kanaToGuess.ToLower()))
             {
                 status = 1;
                 statusToDisplay = "alert alert-success";
@@ -136,9 +205,12 @@
                 status = 2;
                 statusToDisplay = "alert alert-danger";
             }
-        }
 
-        resetInput();
+            resetInput(false);
+        }
+        else
+            resetInput();
+
         lastGuessWas = toGuess;
         generateKanaToGuess();
     }
@@ -151,8 +223,14 @@
             Skip();
     }
 
-    private void resetInput ()
+    private void resetInput (bool resetAll = true)
     {
-        KanaToGuess = String.Empty;
+        kanaToGuess = String.Empty;
+
+        if (resetAll)
+        {
+            status = 0;
+            statusToDisplay = String.Empty;
+        }
     }
 }

@@ -10,13 +10,28 @@ namespace ApprentissageKana.Components
         ComboDiacritic = 3
     }
 
+    public enum KanaEnum
+    {
+        Hiragana = 0,
+        Katakana = 1
+    }
+
     public class Kana
     {
         public string nom = String.Empty;
         public double poids;
+
+        // Catégorie du Kana
         public Categorie categorie;
+
+        // Permet de savoir si l’affichage doit-être en Hiragana ou Katakana
+        public KanaEnum kanaEnum;
+
+        // Code Unicode correspondant à la syllabe
         public string unicodeHiragana = String.Empty;
         public string unicodeKatakana = String.Empty;
+
+        public string texteAAfficher = String.Empty;
 
         public static List<Kana> initialiseAllKana ()
         {
