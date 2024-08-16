@@ -20,9 +20,9 @@
                 }
             </tr>
 
-            @foreach (string fontName in ApprentissageKana.Components.Utils.Globales.AllFonts)
+            @foreach (Components.Font fontName in ApprentissageKana.Components.Utils.Globales.AllFonts)
             {
-                <ApprentissageKana.Components.Pages.Composants.DisplayFullTabOfKanas FontName="@fontName" getAllHiragana="@getAllHiragana" />
+                <ApprentissageKana.Components.Pages.Composants.DisplayFullTabOfKanas FontName="@fontName.nom" getAllHiragana="@getAllHiragana" />
             }
         </table>
     </div>

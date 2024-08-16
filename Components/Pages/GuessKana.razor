@@ -9,21 +9,23 @@
         <h1>Devine les kanas</h1>
     </div>
 
-    <div class="col-12 text-center bigKana">
-        @if (toGuess.kanaEnum == KanaEnum.Hiragana)
-        {
-            toGuess.texteAAfficher = toGuess.unicodeHiragana;
-        }
-        else if (toGuess.kanaEnum == KanaEnum.Katakana)
-        {
-            toGuess.texteAAfficher = toGuess.unicodeKatakana;
-        }
-        @(toGuess.texteAAfficher)
-    </div>
-
     <div class="row">
         <div class="col-4" />
         <div class="col-4">
+            <div class="row">
+                <div class="col-12 text-center bigKana @fontName">
+                    @if (toGuess.kanaEnum == KanaEnum.Hiragana)
+                    {
+                        toGuess.texteAAfficher = toGuess.unicodeHiragana;
+                    }
+                    else if (toGuess.kanaEnum == KanaEnum.Katakana)
+                    {
+                        toGuess.texteAAfficher = toGuess.unicodeKatakana;
+                    }
+                    @(toGuess.texteAAfficher)
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-12 input-group input-group-lg">
                     <span class="input-group-text" id="inputGroup-sizing-lg">Kana</span>
@@ -86,17 +88,53 @@
             </div>
         </div>
         <div class="col-4">
-            <div class="form-check">
-                <input @onchange="onChangeHiragana" class="form-check-input" type="checkbox" value="" id="flexCheckHiragana" checked>
-                <label class="form-check-label" for="flexCheckHiragana">
-                    Hiragana
-                </label>
+            <div class="row">
+                <div class="border border-primary border-2 rounded col-6 offset-6">
+                    <div class="p-3">
+                        <div class="form-check">
+                            <input @onchange="onChangeHiragana" class="form-check-input" type="checkbox" value="" id="flexCheckHiragana" checked>
+                            <label class="form-check-label" for="flexCheckHiragana">
+                                Hiragana
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input @onchange="onChangeKatakana" class="form-check-input" type="checkbox" value="" id="flexCheckKatakana" checked>
+                            <label class="form-check-label" for="flexCheckKatakana">
+                                Katakana
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-check">
-                <input @onchange="onChangeKatakana" class="form-check-input" type="checkbox" value="" id="flexCheckKatakana" checked>
-                <label class="form-check-label" for="flexCheckKatakana">
-                    Katakana
-                </label>
+            <div class="row pt-3">
+                <div class="border border-primary border-2 rounded col-6 offset-6">
+                    <div class="p-3">
+                        <div class="form-check">
+                            <input @onchange="onChangeHiragana" class="form-check-input" type="checkbox" value="" id="flexCheckHiragana" checked>
+                            <label class="form-check-label" for="flexCheckHiragana">
+                                Polices faciles
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input @onchange="onChangeKatakana" class="form-check-input" type="checkbox" value="" id="flexCheckKatakana" checked>
+                            <label class="form-check-label" for="flexCheckKatakana">
+                                Polices intermédiaires
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input @onchange="onChangeKatakana" class="form-check-input" type="checkbox" value="" id="flexCheckKatakana" checked>
+                            <label class="form-check-label" for="flexCheckKatakana">
+                                Polices difficiles
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input @onchange="onChangeKatakana" class="form-check-input" type="checkbox" value="" id="flexCheckKatakana" checked>
+                            <label class="form-check-label" for="flexCheckKatakana">
+                                Polices exotiques
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -122,6 +160,8 @@
 
     bool hiragana { get; set; } = true;
     bool katakana { get; set; } = true;
+
+    string fontName { get; set; } = "NotoSansJP";
 
 
     protected override async Task OnInitializedAsync()
@@ -150,7 +190,7 @@
 
         if (listHiraganaToGuess.Count == 0)
             listHiraganaToGuess = Kana.initialiseAllKana();
-        
+
         if (listKatakanaToGuess.Count == 0)
             listKatakanaToGuess = Kana.initialiseAllKana();
 
@@ -175,6 +215,7 @@
         toGuess = listKana.ElementAt(rand.Next(listKana.Count));
         listKana = listKana.Where(x => x.GetHashCode() != toGuess.GetHashCode()).ToList();
         toGuess.kanaEnum = resultEnum;
+        fontName = ApprentissageKana.Components.Utils.Globales.AllFonts.ElementAt(rand.Next(ApprentissageKana.Components.Utils.Globales.AllFonts.Count)).nom;
     }
 
     public void Help()
