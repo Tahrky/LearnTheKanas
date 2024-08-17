@@ -1,6 +1,6 @@
 ﻿@page "/"
 @using System.Linq
-@using ApprentissageKana.Components
+@using ApprentissageKana.Components.Composants
 
 <div class="row">
     <PageTitle>Apprendre les kanas</PageTitle>
@@ -20,7 +20,7 @@
                 }
             </tr>
 
-            @foreach (Components.Font fontName in ApprentissageKana.Components.Utils.Globales.AllFonts)
+            @foreach (Components.Composants.Font fontName in ApprentissageKana.Components.Utils.Globales.AllFonts)
             {
                 <ApprentissageKana.Components.Pages.Composants.DisplayFullTabOfKanas FontName="@fontName.nom" getAllHiragana="@getAllHiragana" />
             }

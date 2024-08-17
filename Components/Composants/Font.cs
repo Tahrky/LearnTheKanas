@@ -1,4 +1,4 @@
-﻿namespace ApprentissageKana.Components.Components
+﻿namespace ApprentissageKana.Components.Composants
 {
     public enum Difficulte
     {

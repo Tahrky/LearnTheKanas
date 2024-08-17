@@ -2,6 +2,8 @@
 @rendermode InteractiveServer
 @using System.Linq
 @using ApprentissageKana.Components
+@using ApprentissageKana.Components.Composants
+@using ApprentissageKana.Components.Utils
 @using Microsoft.AspNetCore.Components;
 
 <div class="row">
@@ -92,14 +94,14 @@
                 <div class="border border-primary border-2 rounded col-6 offset-6">
                     <div class="p-3">
                         <div class="form-check">
-                            <input @onchange="onChangeHiragana" class="form-check-input" type="checkbox" value="" id="flexCheckHiragana" checked>
-                            <label class="form-check-label" for="flexCheckHiragana">
+                            <input @onchange="onChangeHiragana" class="form-check-input" type="checkbox" value="" checked>
+                            <label class="form-check-label">
                                 Hiragana
                             </label>
                         </div>
                         <div class="form-check">
-                            <input @onchange="onChangeKatakana" class="form-check-input" type="checkbox" value="" id="flexCheckKatakana" checked>
-                            <label class="form-check-label" for="flexCheckKatakana">
+                            <input @onchange="onChangeKatakana" class="form-check-input" type="checkbox" value="" checked>
+                            <label class="form-check-label">
                                 Katakana
                             </label>
                         </div>
@@ -110,26 +112,26 @@
                 <div class="border border-primary border-2 rounded col-6 offset-6">
                     <div class="p-3">
                         <div class="form-check">
-                            <input @onchange="onChangeHiragana" class="form-check-input" type="checkbox" value="" id="flexCheckHiragana" checked>
-                            <label class="form-check-label" for="flexCheckHiragana">
+                            <input @onchange="onChangeFacile" class="form-check-input" type="checkbox" value="" checked>
+                            <label class="form-check-label">
                                 Polices faciles
                             </label>
                         </div>
                         <div class="form-check">
-                            <input @onchange="onChangeKatakana" class="form-check-input" type="checkbox" value="" id="flexCheckKatakana" checked>
-                            <label class="form-check-label" for="flexCheckKatakana">
+                            <input @onchange="onChangeIntermediaire" class="form-check-input" type="checkbox" value="" checked>
+                            <label class="form-check-label">
                                 Polices intermédiaires
                             </label>
                         </div>
                         <div class="form-check">
-                            <input @onchange="onChangeKatakana" class="form-check-input" type="checkbox" value="" id="flexCheckKatakana" checked>
-                            <label class="form-check-label" for="flexCheckKatakana">
+                            <input @onchange="onChangeDifficile" class="form-check-input" type="checkbox" value="">
+                            <label class="form-check-label">
                                 Polices difficiles
                             </label>
                         </div>
                         <div class="form-check">
-                            <input @onchange="onChangeKatakana" class="form-check-input" type="checkbox" value="" id="flexCheckKatakana" checked>
-                            <label class="form-check-label" for="flexCheckKatakana">
+                            <input @onchange="onChangeExotique" class="form-check-input" type="checkbox" value="">
+                            <label class="form-check-label">
                                 Polices exotiques
                             </label>
                         </div>
@@ -158,18 +160,58 @@
     // Permet d’afficher le texte à l’utilisateur
     private string textToRender { get; set; } = String.Empty;
 
-    bool hiragana { get; set; } = true;
-    bool katakana { get; set; } = true;
+    private bool hiragana { get; set; } = true;
+    private bool katakana { get; set; } = true;
 
-    string fontName { get; set; } = "NotoSansJP";
-
+    private string fontName { get; set; } = "NotoSansJP";
+    private List<Difficulte> fontsDifficulty = new List<Difficulte>();
+    private List<Font> eligibleFonts = new List<Font>();
 
     protected override async Task OnInitializedAsync()
     {
         listHiraganaToGuess = Kana.initialiseAllKana();
         listKatakanaToGuess = Kana.initialiseAllKana();
         lastGuessWas = null;
+
+        fontsDifficulty.Add(Difficulte.Facile);
+        fontsDifficulty.Add(Difficulte.Intermediaire);
+        eligibleFonts = Globales.AllFonts.Where(x => fontsDifficulty.Any(y => x.difficulte == y)).ToList();
+
         generateKanaToGuess();
+    }
+
+    private void onChangeFacile()
+    {
+        manageFonts(Difficulte.Facile);
+        generateKanaToGuess();
+    }
+
+    private void onChangeIntermediaire()
+    {
+        manageFonts(Difficulte.Intermediaire);
+        generateKanaToGuess();
+    }
+
+    private void onChangeDifficile()
+    {
+        manageFonts(Difficulte.Difficile);
+        generateKanaToGuess();
+    }
+
+    private void onChangeExotique()
+    {
+        manageFonts(Difficulte.Exotique);
+        generateKanaToGuess();
+    }
+
+    private void manageFonts (Difficulte diff)
+    {
+        if (fontsDifficulty.Any(x => x == diff))
+            fontsDifficulty.Remove(diff);
+        else
+            fontsDifficulty.Add(diff);
+
+        eligibleFonts = Globales.AllFonts.Where(x => fontsDifficulty.Any (y => x.difficulte == y)).ToList();
     }
 
     private void onChangeHiragana()
@@ -215,7 +257,11 @@
         toGuess = listKana.ElementAt(rand.Next(listKana.Count));
         listKana = listKana.Where(x => x.GetHashCode() != toGuess.GetHashCode()).ToList();
         toGuess.kanaEnum = resultEnum;
-        fontName = ApprentissageKana.Components.Utils.Globales.AllFonts.ElementAt(rand.Next(ApprentissageKana.Components.Utils.Globales.AllFonts.Count)).nom;
+
+        if (eligibleFonts.Count == 0)
+            fontName = "NotoSansJP";
+        else
+            fontName = eligibleFonts.ElementAt(rand.Next(eligibleFonts.Count)).nom;
     }
 
     public void Help()

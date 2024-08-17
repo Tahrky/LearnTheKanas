@@ -1,4 +1,4 @@
-﻿using ApprentissageKana.Components.Components;
+﻿using ApprentissageKana.Components.Composants;
 
 namespace ApprentissageKana.Components.Utils
 {
