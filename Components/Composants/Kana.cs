@@ -35,7 +35,7 @@
         public string texteAAfficher = String.Empty;
         public string aideAAfficher = String.Empty;
 
-        public static List<Kana> initialiseAllKana ()
+        public static List<Kana> initialiseAllKana (bool kana = true, bool daikuten = false, bool combo = false)
         {
             Kana a = new Kana
             {
@@ -543,6 +543,303 @@
                 aideKatakana = "",
             };
 
+            Kana diacriticDakuten = new Kana
+            {
+                nom = "dakuten ",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = "\u3099",
+                unicodeKatakana = "\u3099",
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana diacriticHandakuten = new Kana
+            {
+                nom = "handakuten",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = "\u309A",
+                unicodeKatakana = "\u309A",
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana ga = new Kana
+            {
+                nom = "ga",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ka.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = ka.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana gi = new Kana
+            {
+                nom = "gi",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ki.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = ki.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana gu = new Kana
+            {
+                nom = "gu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ku.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = ku.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana ge = new Kana
+            {
+                nom = "ge",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ke.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = ke.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana go = new Kana
+            {
+                nom = "go",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ko.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = ko.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana za = new Kana
+            {
+                nom = "za",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = sa.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = sa.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana ji = new Kana
+            {
+                nom = "ji",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = shi.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = shi.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana zu = new Kana
+            {
+                nom = "zu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = su.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = su.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana ze = new Kana
+            {
+                nom = "ze",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = se.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = se.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana zo = new Kana
+            {
+                nom = "zo",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = so.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = so.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana da = new Kana
+            {
+                nom = "da",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ta.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = ta.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana dji = new Kana
+            {
+                nom = "dji",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = chi.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = chi.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana dzu = new Kana
+            {
+                nom = "dzu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = tsu.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = tsu.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana de = new Kana
+            {
+                nom = "de",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = te.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = te.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana doKana = new Kana
+            {
+                nom = "do",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = to.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = to.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana ba = new Kana
+            {
+                nom = "ba",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ha.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = ha.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana bi = new Kana
+            {
+                nom = "bi",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = hi.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = hi.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana bu = new Kana
+            {
+                nom = "bu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = fu.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = fu.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana be = new Kana
+            {
+                nom = "be",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = he.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = he.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana bo = new Kana
+            {
+                nom = "bo",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ho.unicodeHiragana + diacriticDakuten.unicodeHiragana,
+                unicodeKatakana = ho.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana pa = new Kana
+            {
+                nom = "pa",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ha.unicodeHiragana + diacriticHandakuten.unicodeHiragana,
+                unicodeKatakana = ha.unicodeKatakana + diacriticHandakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana pi = new Kana
+            {
+                nom = "pi",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = hi.unicodeHiragana + diacriticHandakuten.unicodeHiragana,
+                unicodeKatakana = hi.unicodeKatakana + diacriticHandakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana pu = new Kana
+            {
+                nom = "pu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = fu.unicodeHiragana + diacriticHandakuten.unicodeHiragana,
+                unicodeKatakana = fu.unicodeKatakana + diacriticHandakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana pe = new Kana
+            {
+                nom = "pe",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = he.unicodeHiragana + diacriticHandakuten.unicodeHiragana,
+                unicodeKatakana = he.unicodeKatakana + diacriticHandakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana po = new Kana
+            {
+                nom = "po",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ho.unicodeHiragana + diacriticHandakuten.unicodeHiragana,
+                unicodeKatakana = ho.unicodeKatakana + diacriticHandakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
             List<Kana> allKanas = new List<Kana> {
                 a,    i,   u,   e,   o,
                 ka,  ki,  ku,  ke,  ko,
@@ -553,10 +850,29 @@
                 ma,  mi,  mu,  me,  mo,
                 ya,       yu,       yo,
                 ra,  ri,  ru,  re,  ro,
-                wa,        n,       wo
+                wa,        n,       wo,
             };
 
-            return allKanas;
+            List<Kana> allDaikutenKanas = new List<Kana> {
+                ga,  gi,  gu,  ge,  go,
+                za,  ji,  zu,  ze,  zo,
+                da, dji, dzu,  de,  doKana,
+                ba,  bi,  bu,  be,  bo,
+                pa,  pi,  pu,  pe,  po,
+            };
+
+            List<Kana> returnList = new List<Kana> ();
+
+            if (kana)
+                returnList.AddRange (allKanas);
+
+            if (daikuten)
+                returnList.AddRange(allDaikutenKanas);
+
+            if (combo)
+                returnList.Add(null);
+
+            return returnList;
         }
     }
 }
