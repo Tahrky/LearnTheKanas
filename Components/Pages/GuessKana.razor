@@ -69,7 +69,7 @@
                                     {
                                         textToRender = "Erreur!";
                                     }
-                                    @(textToRender += " Le kana précédent était " + lastGuessWas.texteAAfficher + " : " + lastGuessWas.nom)
+                                    @(textToRender += " Le kana précédent était " + lastGuessWas.texteAAfficher + " : " + lastGuessWas.nom + (!String.IsNullOrEmpty(lastGuessWas.nomAlternatif) ? " (" + lastGuessWas.nomAlternatif + ")" : String.Empty))
                                 </span>
                             </div>
                         </div>
@@ -93,48 +93,28 @@
             <div class="row">
                 <div class="border border-primary border-2 rounded col-6 offset-6">
                     <div class="p-3">
-                        <div class="form-check">
-                            <input @onchange="onChangeHiragana" class="form-check-input" type="checkbox" value="" checked>
-                            <label class="form-check-label">
-                                Hiragana
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input @onchange="onChangeKatakana" class="form-check-input" type="checkbox" value="" checked>
-                            <label class="form-check-label">
-                                Katakana
-                            </label>
-                        </div>
+                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Hiragana" OnChange="@onChangeHiragana" Checked="@hiragana" />
+                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Katakana" OnChange="@onChangeKatakana" Checked="@katakana" />
                     </div>
                 </div>
             </div>
             <div class="row pt-3">
                 <div class="border border-primary border-2 rounded col-6 offset-6">
                     <div class="p-3">
-                        <div class="form-check">
-                            <input @onchange="onChangeFacile" class="form-check-input" type="checkbox" value="" checked>
-                            <label class="form-check-label">
-                                Polices faciles
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input @onchange="onChangeIntermediaire" class="form-check-input" type="checkbox" value="" checked>
-                            <label class="form-check-label">
-                                Polices intermédiaires
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input @onchange="onChangeDifficile" class="form-check-input" type="checkbox" value="">
-                            <label class="form-check-label">
-                                Polices difficiles
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input @onchange="onChangeExotique" class="form-check-input" type="checkbox" value="">
-                            <label class="form-check-label">
-                                Polices exotiques
-                            </label>
-                        </div>
+                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Kanas classiques" OnChange="() => manageCategorie(0)" Checked="categories[0]" />
+                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Kanas altérés" OnChange="() => manageCategorie(1)" Checked="categories[1]" />
+                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Kanas combinés" OnChange="() => manageCategorie(2)" Checked="categories[2]" />
+                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Kanas combinés altérés" OnChange="() => manageCategorie(3)" Checked="categories[3]" />
+                    </div>
+                </div>
+            </div>
+            <div class="row pt-3">
+                <div class="border border-primary border-2 rounded col-6 offset-6">
+                    <div class="p-3">
+                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Polices faciles" OnChange="() => manageFonts(Difficulte.Facile)" Checked="fontsDifficulty.Any(x => x == Difficulte.Facile)" />
+                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Polices intermédiaires" OnChange="() => manageFonts(Difficulte.Intermediaire)" Checked="fontsDifficulty.Any(x => x == Difficulte.Intermediaire)" />
+                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Polices difficiles" OnChange="() => manageFonts(Difficulte.Difficile)" Checked="fontsDifficulty.Any(x => x == Difficulte.Difficile)" />
+                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Polices exotiques" OnChange="() => manageFonts(Difficulte.Exotique)" Checked="fontsDifficulty.Any(x => x == Difficulte.Exotique)" />
                     </div>
                 </div>
             </div>
@@ -165,12 +145,14 @@
 
     private string fontName { get; set; } = "NotoSansJP";
     private List<Difficulte> fontsDifficulty = new List<Difficulte>();
+    private List<bool> categories = new List<bool>();
     private List<Font> eligibleFonts = new List<Font>();
 
     protected override async Task OnInitializedAsync()
     {
-        listHiraganaToGuess = Kana.initialiseAllKana();
-        listKatakanaToGuess = Kana.initialiseAllKana();
+        categories.AddRange(new List<bool>() {true, false, false, false});
+        listHiraganaToGuess = Kana.initialiseAllKana(categories).Where(x => !String.IsNullOrEmpty(x.unicodeHiragana)).ToList();
+        listKatakanaToGuess = Kana.initialiseAllKana(categories);
         lastGuessWas = null;
 
         fontsDifficulty.Add(Difficulte.Facile);
@@ -180,27 +162,11 @@
         generateKanaToGuess();
     }
 
-    private void onChangeFacile()
+    private void manageCategorie(int position)
     {
-        manageFonts(Difficulte.Facile);
-        generateKanaToGuess();
-    }
-
-    private void onChangeIntermediaire()
-    {
-        manageFonts(Difficulte.Intermediaire);
-        generateKanaToGuess();
-    }
-
-    private void onChangeDifficile()
-    {
-        manageFonts(Difficulte.Difficile);
-        generateKanaToGuess();
-    }
-
-    private void onChangeExotique()
-    {
-        manageFonts(Difficulte.Exotique);
+        categories[position] = !categories[position];
+        listHiraganaToGuess = Kana.initialiseAllKana(categories).Where (x => !String.IsNullOrEmpty(x.unicodeHiragana)).ToList ();
+        listKatakanaToGuess = Kana.initialiseAllKana(categories);
         generateKanaToGuess();
     }
 
@@ -212,6 +178,7 @@
             fontsDifficulty.Add(diff);
 
         eligibleFonts = Globales.AllFonts.Where(x => fontsDifficulty.Any (y => x.difficulte == y)).ToList();
+        generateKanaToGuess();
     }
 
     private void onChangeHiragana()
@@ -231,10 +198,10 @@
         Random rand = new Random();
 
         if (listHiraganaToGuess.Count == 0)
-            listHiraganaToGuess = Kana.initialiseAllKana();
+            listHiraganaToGuess = Kana.initialiseAllKana(categories).Where(x => !String.IsNullOrEmpty(x.unicodeHiragana)).ToList(); ;
 
         if (listKatakanaToGuess.Count == 0)
-            listKatakanaToGuess = Kana.initialiseAllKana();
+            listKatakanaToGuess = Kana.initialiseAllKana(categories);
 
         if (hiragana && katakana)
         {
@@ -253,6 +220,9 @@
 
     public void updateGuess(ref List<Kana> listKana, KanaEnum resultEnum)
     {
+        if (listKana.Count <= 0)
+            return;
+
         Random rand = new Random();
         toGuess = listKana.ElementAt(rand.Next(listKana.Count));
         listKana = listKana.Where(x => x.GetHashCode() != toGuess.GetHashCode()).ToList();
@@ -281,7 +251,9 @@
         if (!String.IsNullOrEmpty(kanaToGuess))
         {
             compteurTotal = compteurTotal + 1;
-            if (toGuess.nom.ToLower().Equals(kanaToGuess.ToLower()))
+            if (toGuess.nom.ToLower().Equals(kanaToGuess.ToLower())
+                || (!String.IsNullOrEmpty (toGuess.nomAlternatif)
+                    && toGuess.nomAlternatif.ToLower().Equals(kanaToGuess.ToLower())))
             {
                 status = 1;
                 statusToDisplay = "alert alert-success";

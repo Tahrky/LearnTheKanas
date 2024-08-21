@@ -1,4 +1,8 @@
-﻿namespace ApprentissageKana.Components.Composants
+﻿using ApprentissageKana.Components.Pages;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace ApprentissageKana.Components.Composants
 {
     public enum Categorie
     {
@@ -17,6 +21,7 @@
     public class Kana
     {
         public string nom = String.Empty;
+        public string nomAlternatif = String.Empty;
         public double poids;
 
         // Catégorie du Kana
@@ -35,7 +40,15 @@
         public string texteAAfficher = String.Empty;
         public string aideAAfficher = String.Empty;
 
-        public static List<Kana> initialiseAllKana (bool kana = true, bool daikuten = false, bool combo = false)
+        public static List<Kana> initialiseAllKana(List<bool> liste)
+        {
+            if (liste.Count != 4)
+                throw new Exception("La liste ne contient pas 4 booléens comme attendu (un par catégorie) !");
+
+            return initialiseAllKana(liste[0], liste[1], liste[2], liste[3]);
+        }
+
+        public static List<Kana> initialiseAllKana (bool kana = true, bool dakuten = false, bool combo = false, bool comboDakuten = false)
         {
             Kana a = new Kana
             {
@@ -840,6 +853,419 @@
                 aideKatakana = "",
             };
 
+            Kana vu = new Kana
+            {
+                nom = "vu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = String.Empty,
+                unicodeKatakana = u.unicodeKatakana + diacriticDakuten.unicodeHiragana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana kya = new Kana
+            {
+                nom = "kya",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ki.unicodeHiragana + ya.unicodeHiragana,
+                unicodeKatakana = ki.unicodeKatakana + ya.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana kyu = new Kana
+            {
+                nom = "kyu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ki.unicodeHiragana + yu.unicodeHiragana,
+                unicodeKatakana = ki.unicodeKatakana + yu.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana kyo = new Kana
+            {
+                nom = "kyo",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ki.unicodeHiragana + yo.unicodeHiragana,
+                unicodeKatakana = ki.unicodeKatakana + yo.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana sha = new Kana
+            {
+                nom = "sha",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = shi.unicodeHiragana + ya.unicodeHiragana,
+                unicodeKatakana = shi.unicodeKatakana + ya.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana shu = new Kana
+            {
+                nom = "shu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = shi.unicodeHiragana + yu.unicodeHiragana,
+                unicodeKatakana = shi.unicodeKatakana + yu.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana sho = new Kana
+            {
+                nom = "sho",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = shi.unicodeHiragana + yo.unicodeHiragana,
+                unicodeKatakana = shi.unicodeKatakana + yo.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana cha = new Kana
+            {
+                nom = "cha",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = chi.unicodeHiragana + ya.unicodeHiragana,
+                unicodeKatakana = chi.unicodeKatakana + ya.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana chu = new Kana
+            {
+                nom = "chu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = chi.unicodeHiragana + yu.unicodeHiragana,
+                unicodeKatakana = chi.unicodeKatakana + yu.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana cho = new Kana
+            {
+                nom = "cho",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = chi.unicodeHiragana + yo.unicodeHiragana,
+                unicodeKatakana = chi.unicodeKatakana + yo.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana nya = new Kana
+            {
+                nom = "nya",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ni.unicodeHiragana + ya.unicodeHiragana,
+                unicodeKatakana = ni.unicodeKatakana + ya.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana nyu = new Kana
+            {
+                nom = "nyu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ni.unicodeHiragana + yu.unicodeHiragana,
+                unicodeKatakana = ni.unicodeKatakana + yu.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana nyo = new Kana
+            {
+                nom = "nyo",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ni.unicodeHiragana + yo.unicodeHiragana,
+                unicodeKatakana = ni.unicodeKatakana + yo.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana hya = new Kana
+            {
+                nom = "hya",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = hi.unicodeHiragana + ya.unicodeHiragana,
+                unicodeKatakana = hi.unicodeKatakana + ya.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana hyu = new Kana
+            {
+                nom = "hyu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = hi.unicodeHiragana + yu.unicodeHiragana,
+                unicodeKatakana = hi.unicodeKatakana + yu.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana hyo = new Kana
+            {
+                nom = "hyo",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = hi.unicodeHiragana + yo.unicodeHiragana,
+                unicodeKatakana = hi.unicodeKatakana + yo.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana mya = new Kana
+            {
+                nom = "mya",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = mi.unicodeHiragana + ya.unicodeHiragana,
+                unicodeKatakana = mi.unicodeKatakana + ya.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana myu = new Kana
+            {
+                nom = "myu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = mi.unicodeHiragana + yu.unicodeHiragana,
+                unicodeKatakana = mi.unicodeKatakana + yu.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana myo = new Kana
+            {
+                nom = "myo",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = mi.unicodeHiragana + yo.unicodeHiragana,
+                unicodeKatakana = mi.unicodeKatakana + yo.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana rya = new Kana
+            {
+                nom = "rya",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ri.unicodeHiragana + ya.unicodeHiragana,
+                unicodeKatakana = ri.unicodeKatakana + ya.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana ryu = new Kana
+            {
+                nom = "ryu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ri.unicodeHiragana + yu.unicodeHiragana,
+                unicodeKatakana = ri.unicodeKatakana + yu.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana ryo = new Kana
+            {
+                nom = "ryo",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ri.unicodeHiragana + yo.unicodeHiragana,
+                unicodeKatakana = ri.unicodeKatakana + yo.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana gya = new Kana
+            {
+                nom = "gya",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = gi.unicodeHiragana + ya.unicodeHiragana,
+                unicodeKatakana = gi.unicodeKatakana + ya.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana gyu = new Kana
+            {
+                nom = "gyu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = gi.unicodeHiragana + yu.unicodeHiragana,
+                unicodeKatakana = gi.unicodeKatakana + yu.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana gyo = new Kana
+            {
+                nom = "gyo",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = gi.unicodeHiragana + yo.unicodeHiragana,
+                unicodeKatakana = gi.unicodeKatakana + yo.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana jya = new Kana
+            {
+                nom = "jya",
+                nomAlternatif = "ja",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ji.unicodeHiragana + ya.unicodeHiragana,
+                unicodeKatakana = ji.unicodeKatakana + ya.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana jyu = new Kana
+            {
+                nom = "jyu",
+                nomAlternatif = "ju",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ji.unicodeHiragana + yu.unicodeHiragana,
+                unicodeKatakana = ji.unicodeKatakana + yu.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana jyo = new Kana
+            {
+                nom = "jyo",
+                nomAlternatif = "jo",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = ji.unicodeHiragana + yo.unicodeHiragana,
+                unicodeKatakana = ji.unicodeKatakana + yo.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana dya = new Kana
+            {
+                nom = "dya",
+                nomAlternatif = "jya",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = dji.unicodeHiragana + ya.unicodeHiragana,
+                unicodeKatakana = dji.unicodeKatakana + ya.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana dyu = new Kana
+            {
+                nom = "dyu",
+                nomAlternatif = "jyu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = dji.unicodeHiragana + yu.unicodeHiragana,
+                unicodeKatakana = dji.unicodeKatakana + yu.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana dyo = new Kana
+            {
+                nom = "dyo",
+                nomAlternatif = "jyo",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = dji.unicodeHiragana + yo.unicodeHiragana,
+                unicodeKatakana = dji.unicodeKatakana + yo.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana bya = new Kana
+            {
+                nom = "bya",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = bi.unicodeHiragana + ya.unicodeHiragana,
+                unicodeKatakana = bi.unicodeKatakana + ya.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana byu = new Kana
+            {
+                nom = "byu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = bi.unicodeHiragana + yu.unicodeHiragana,
+                unicodeKatakana = bi.unicodeKatakana + yu.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana byo = new Kana
+            {
+                nom = "byo",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = bi.unicodeHiragana + yo.unicodeHiragana,
+                unicodeKatakana = bi.unicodeKatakana + yo.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana pya = new Kana
+            {
+                nom = "pya",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = pi.unicodeHiragana + ya.unicodeHiragana,
+                unicodeKatakana = pi.unicodeKatakana + ya.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana pyu = new Kana
+            {
+                nom = "pyu",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = pi.unicodeHiragana + yu.unicodeHiragana,
+                unicodeKatakana = pi.unicodeKatakana + yu.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
+            Kana pyo = new Kana
+            {
+                nom = "pyo",
+                poids = 1,
+                categorie = 0,
+                unicodeHiragana = pi.unicodeHiragana + yo.unicodeHiragana,
+                unicodeKatakana = pi.unicodeKatakana + yo.unicodeKatakana,
+                aideHiragana = "",
+                aideKatakana = "",
+            };
+
             List<Kana> allKanas = new List<Kana> {
                 a,    i,   u,   e,   o,
                 ka,  ki,  ku,  ke,  ko,
@@ -853,12 +1279,36 @@
                 wa,        n,       wo,
             };
 
-            List<Kana> allDaikutenKanas = new List<Kana> {
+            List<Kana> allDakutenKanas = new List<Kana> {
                 ga,  gi,  gu,  ge,  go,
                 za,  ji,  zu,  ze,  zo,
                 da, dji, dzu,  de,  doKana,
                 ba,  bi,  bu,  be,  bo,
                 pa,  pi,  pu,  pe,  po,
+                // Existe uniquement en katakana
+                vu,
+            };
+
+            List<Kana> comboKanas = new List<Kana> {
+                kya,  kyu,  kyo,
+                sha,  shu,  sho,
+                cha,  chu,  cho,
+                nya,  nyu,  nyo,
+                hya,  hyu,  hyo,
+                mya,  myu,  myo,
+                rya,  ryu,  ryo,
+                // Existe uniquement en katakana
+                
+            };
+
+            List<Kana> comboDakutenKanas = new List<Kana> {
+                gya,  gyu,  gyo,
+                jya,  jyu,  jyo,
+                dya,  dyu,  dyo,
+                bya,  byu,  byo,
+                pya,  pyu,  pyo,
+                // Existe uniquement en katakana
+                
             };
 
             List<Kana> returnList = new List<Kana> ();
@@ -866,11 +1316,14 @@
             if (kana)
                 returnList.AddRange (allKanas);
 
-            if (daikuten)
-                returnList.AddRange(allDaikutenKanas);
+            if (dakuten)
+                returnList.AddRange(allDakutenKanas);
 
             if (combo)
-                returnList.Add(null);
+                returnList.AddRange(comboKanas);
+
+            if (comboDakuten)
+                returnList.AddRange(comboDakutenKanas);
 
             return returnList;
         }

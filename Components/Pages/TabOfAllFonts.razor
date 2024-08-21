@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/AllFonts"
 @using System.Linq
 @using ApprentissageKana.Components.Composants
 
@@ -34,6 +34,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        getAllHiragana = Kana.initialiseAllKana (false, true);
+        getAllHiragana = Kana.initialiseAllKana (true, true, true, true);
     }
 }
