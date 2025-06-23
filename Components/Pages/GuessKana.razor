@@ -11,10 +11,6 @@
         <h1>Devine les kanas</h1>
     </div>
 
-    <div>
-        @(learnTheKanaContext.Users.FirstOrDefault ()?.username)
-    </div>
-
     <div class="row">
         <div class="col-4" />
         <div class="col-4">
@@ -91,9 +87,6 @@
                 <div class="col-12 col-md-4">
                     <button class="btn btn-primary w-100" @onclick="Submit">Valider</button>
                 </div>
-                <div class="col-12 col-md-4">
-                    <button class="btn btn-primary w-100" @onclick="CreateUser">CreateUser</button>
-                </div>
             </div>
         </div>
         <div class="col-4">
@@ -134,8 +127,6 @@
     private List<Kana> listKatakanaToGuess = new List<Kana>();
     private Kana? lastGuessWas { get; set; }
     private Kana toGuess = new Kana ();
-
-    private DAL.KanaContext learnTheKanaContext = new DAL.KanaContext();
 
     // Récupère les informations que l’utilisateur a saisi
     private string kanaToGuess { get; set; } = String.Empty;
@@ -300,11 +291,5 @@
             status = 0;
             statusToDisplay = String.Empty;
         }
-    }
-
-    private void CreateUser()
-    {
-        learnTheKanaContext.Users.Add(new Models.Users () {username = "toto", password = "titi"});
-        learnTheKanaContext.SaveChanges();
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ApprentissageKana.Models
+namespace ApprentissageKana.DAL.Models
 {
     public class Users
     {

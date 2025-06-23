@@ -1,4 +1,5 @@
 using ApprentissageKana.Components;
+using ApprentissageKana.Components.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 var app = builder.Build();
+
+Configuration.DefaultConnection = builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

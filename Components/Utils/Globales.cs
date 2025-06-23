@@ -4,6 +4,8 @@ namespace ApprentissageKana.Components.Utils
 {
     public class Globales
     {
+        static public DAL.KanaContext kanaDB = new DAL.KanaContext();
+
         static public List<Font> AllFonts = new List<Font>()
         {
             new Font("Kaisei", Difficulte.Facile),
