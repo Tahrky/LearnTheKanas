@@ -1,8 +1,4 @@
-﻿using ApprentissageKana.Components.Pages;
-using System.Security.Cryptography;
-using System.Text;
-
-namespace ApprentissageKana.Components.Composants
+﻿namespace ApprentissageKana.Class
 {
     public enum Categorie
     {
@@ -20,8 +16,8 @@ namespace ApprentissageKana.Components.Composants
 
     public class Kana
     {
-        public string nom = String.Empty;
-        public string nomAlternatif = String.Empty;
+        public string nom = string.Empty;
+        public string nomAlternatif = string.Empty;
         public double poids;
 
         // Catégorie du Kana
@@ -31,14 +27,14 @@ namespace ApprentissageKana.Components.Composants
         public KanaEnum kanaEnum;
 
         // Code Unicode correspondant à la syllabe
-        public string unicodeHiragana = String.Empty;
-        public string unicodeKatakana = String.Empty;
+        public string unicodeHiragana = string.Empty;
+        public string unicodeKatakana = string.Empty;
 
-        public string aideHiragana = String.Empty;
-        public string aideKatakana = String.Empty;
+        public string aideHiragana = string.Empty;
+        public string aideKatakana = string.Empty;
 
-        public string texteAAfficher = String.Empty;
-        public string aideAAfficher = String.Empty;
+        public string texteAAfficher = string.Empty;
+        public string aideAAfficher = string.Empty;
 
         public static List<Kana> initialiseAllKana(List<bool> liste)
         {
@@ -48,7 +44,7 @@ namespace ApprentissageKana.Components.Composants
             return initialiseAllKana(liste[0], liste[1], liste[2], liste[3]);
         }
 
-        public static List<Kana> initialiseAllKana (bool kana = true, bool dakuten = false, bool combo = false, bool comboDakuten = false)
+        public static List<Kana> initialiseAllKana(bool kana = true, bool dakuten = false, bool combo = false, bool comboDakuten = false)
         {
             Kana a = new Kana
             {
@@ -858,7 +854,7 @@ namespace ApprentissageKana.Components.Composants
                 nom = "vu",
                 poids = 1,
                 categorie = 0,
-                unicodeHiragana = String.Empty,
+                unicodeHiragana = string.Empty,
                 unicodeKatakana = u.unicodeKatakana + diacriticDakuten.unicodeHiragana,
                 aideHiragana = "",
                 aideKatakana = "",
@@ -1311,10 +1307,10 @@ namespace ApprentissageKana.Components.Composants
                 
             };
 
-            List<Kana> returnList = new List<Kana> ();
+            List<Kana> returnList = new List<Kana>();
 
             if (kana)
-                returnList.AddRange (allKanas);
+                returnList.AddRange(allKanas);
 
             if (dakuten)
                 returnList.AddRange(allDakutenKanas);

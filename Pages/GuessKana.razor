@@ -1,10 +1,9 @@
 ﻿@page "/GuessKana"
 @rendermode InteractiveServer
-@using System.Linq
-@using ApprentissageKana.Components
-@using ApprentissageKana.Components.Composants
-@using ApprentissageKana.Components.Utils
-@using Microsoft.AspNetCore.Components;
+@using System.Linq;
+@using ApprentissageKana.Class;
+@using ApprentissageKana.Pages.Composants;
+@using ApprentissageKana.Utils;
 
 <div class="row">
     <div class="col-12 pt-3 text-center">
@@ -93,28 +92,28 @@
             <div class="row">
                 <div class="border border-primary border-2 rounded col-6 offset-6">
                     <div class="p-3">
-                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Hiragana" OnChange="@onChangeHiragana" Checked="@hiragana" />
-                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Katakana" OnChange="@onChangeKatakana" Checked="@katakana" />
+                        <FormCheck Label="Hiragana" OnChange="@onChangeHiragana" Checked="@hiragana" />
+                        <FormCheck Label="Katakana" OnChange="@onChangeKatakana" Checked="@katakana" />
                     </div>
                 </div>
             </div>
             <div class="row pt-3">
                 <div class="border border-primary border-2 rounded col-6 offset-6">
                     <div class="p-3">
-                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Kanas classiques" OnChange="() => manageCategorie(0)" Checked="categories[0]" />
-                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Kanas altérés" OnChange="() => manageCategorie(1)" Checked="categories[1]" />
-                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Kanas combinés" OnChange="() => manageCategorie(2)" Checked="categories[2]" />
-                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Kanas combinés altérés" OnChange="() => manageCategorie(3)" Checked="categories[3]" />
+                        <FormCheck Label="Kanas classiques" OnChange="() => manageCategorie(0)" Checked="categories[0]" />
+                        <FormCheck Label="Kanas altérés" OnChange="() => manageCategorie(1)" Checked="categories[1]" />
+                        <FormCheck Label="Kanas combinés" OnChange="() => manageCategorie(2)" Checked="categories[2]" />
+                        <FormCheck Label="Kanas combinés altérés" OnChange="() => manageCategorie(3)" Checked="categories[3]" />
                     </div>
                 </div>
             </div>
             <div class="row pt-3">
                 <div class="border border-primary border-2 rounded col-6 offset-6">
                     <div class="p-3">
-                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Polices faciles" OnChange="() => manageFonts(Difficulte.Facile)" Checked="fontsDifficulty.Any(x => x == Difficulte.Facile)" />
-                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Polices intermédiaires" OnChange="() => manageFonts(Difficulte.Intermediaire)" Checked="fontsDifficulty.Any(x => x == Difficulte.Intermediaire)" />
-                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Polices difficiles" OnChange="() => manageFonts(Difficulte.Difficile)" Checked="fontsDifficulty.Any(x => x == Difficulte.Difficile)" />
-                        <ApprentissageKana.Components.Pages.Composants.FormCheck Label="Polices exotiques" OnChange="() => manageFonts(Difficulte.Exotique)" Checked="fontsDifficulty.Any(x => x == Difficulte.Exotique)" />
+                        <FormCheck Label="Polices faciles" OnChange="() => manageFonts(Difficulte.Facile)" Checked="fontsDifficulty.Any(x => x == Difficulte.Facile)" />
+                        <FormCheck Label="Polices intermédiaires" OnChange="() => manageFonts(Difficulte.Intermediaire)" Checked="fontsDifficulty.Any(x => x == Difficulte.Intermediaire)" />
+                        <FormCheck Label="Polices difficiles" OnChange="() => manageFonts(Difficulte.Difficile)" Checked="fontsDifficulty.Any(x => x == Difficulte.Difficile)" />
+                        <FormCheck Label="Polices exotiques" OnChange="() => manageFonts(Difficulte.Exotique)" Checked="fontsDifficulty.Any(x => x == Difficulte.Exotique)" />
                     </div>
                 </div>
             </div>

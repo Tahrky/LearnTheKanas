@@ -1,15 +1,17 @@
-using ApprentissageKana.Components;
-using ApprentissageKana.Components.Utils;
+using ApprentissageKana.Services;
+using ApprentissageKana.Shared;
+using ApprentissageKana.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+builder.Services.AddSingleton<DatabaseService>();
 
 var app = builder.Build();
 
-Configuration.DefaultConnection = builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
+Configuration.DefaultConnection = builder.Configuration.GetSection("ConnectionSettings:DefaultConnection").Value;
+Configuration.GrainDeSable = builder.Configuration.GetSection("ConnectionSettings:GrainDeSable").Value;
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

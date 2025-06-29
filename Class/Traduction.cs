@@ -1,4 +1,4 @@
-﻿namespace ApprentissageKana.Components.Composants
+﻿namespace ApprentissageKana.Class
 {
     public enum TexteATraduire
     {
@@ -25,7 +25,7 @@
     public class Traduction
     {
         public TexteATraduire reference { get; set; }
-        public String traduction { get; set; }
+        public string traduction { get; set; }
 
     }
 

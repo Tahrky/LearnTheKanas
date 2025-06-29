@@ -1,4 +1,5 @@
 ﻿using ApprentissageKana.DAL.Models;
+using ApprentissageKana.Utils;
 using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -10,7 +11,7 @@ namespace ApprentissageKana.DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(Components.Utils.Configuration.DefaultConnection);
+            optionsBuilder.UseSqlServer(Configuration.DefaultConnection);
         }
     }
 }

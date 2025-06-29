@@ -1,0 +1,26 @@
+﻿@page "/Connection"
+@rendermode InteractiveServer
+
+@using ApprentissageKana.Services
+
+@inject DatabaseService DBService
+
+<div class="row">
+    <div class="col-12 pt-3 text-center">
+        <h1>Page de connexion</h1>
+    </div>
+</div>
+
+<button class="btn btn-primary w-100" @onclick="CreateFakeAccount">Créer un compte</button>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    protected void CreateFakeAccount()
+    {
+        DBService.AddUser ("Toto", "TotoPassword");
+    }
+}
