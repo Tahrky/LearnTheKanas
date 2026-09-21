@@ -5,10 +5,11 @@
         Normal = 0,
         Diacritic = 1,
         Combo = 2,
-        ComboDiacritic = 3
+        ComboDiacritic = 3,
+        Kanji = 4
     }
 
-    public enum KanaEnum
+    public enum KanaType
     {
         Hiragana = 0,
         Katakana = 1
@@ -24,7 +25,7 @@
         public Categorie categorie;
 
         // Permet de savoir si l’affichage doit-être en Hiragana ou Katakana
-        public KanaEnum kanaEnum;
+        public KanaType kanaType;
 
         // Code Unicode correspondant à la syllabe
         public string unicodeHiragana = string.Empty;
@@ -317,7 +318,7 @@
                 categorie = 0,
                 unicodeHiragana = "\u306E",
                 unicodeKatakana = "\u30CE",
-                aideHiragana = "",
+                aideHiragana = "Interdiction",
                 aideKatakana = "",
             };
 

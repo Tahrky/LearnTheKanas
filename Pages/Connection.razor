@@ -9,18 +9,78 @@
     <div class="col-12 pt-3 text-center">
         <h1>Page de connexion</h1>
     </div>
+
+    <div class="col-xs-12 col-md-4" />
+    <div class="col-xs-12 col-md-4">
+        <div class="row">
+            <div class="col-12 input-group input-group-lg pt-3">
+                <span class="input-group-text" id="inputGroup-sizing-lg">Nom du compte</span>
+                <input @bind=username type="text" class="form-control"
+                       aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 input-group input-group-lg pt-3">
+                <span class="input-group-text" id="inputGroup-sizing-lg">Mot de passe</span>
+                <input @bind=password type="password" min="6" class="form-control"
+                       aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 input-group input-group-lg pt-3">
+                <div class="form-control">@errorToDisplay</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 pt-3">
+                <button class="btn btn-primary w-100" @onclick="Connect">Se connecter</button>
+            </div>    
+        </div>
+        <div class="row">
+            <div class="col-12 pt-3">
+                <button class="btn btn-secondary w-100" @onclick="CreateAccount">Créer un compte</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-4" />
 </div>
 
-<button class="btn btn-primary w-100" @onclick="CreateFakeAccount">Créer un compte</button>
-
 @code {
+    private string username { get; set; } = String.Empty;
+    private string password { get; set; } = String.Empty;
+    private string errorToDisplay { get; set; } = String.Empty;
+
     protected override async Task OnInitializedAsync()
     {
 
     }
 
-    protected void CreateFakeAccount()
+    protected void Connect()
     {
-        DBService.AddUser ("Toto", "TotoPassword");
+        errorToDisplay = String.Empty;
+        bool connexionReussie = true;
+
+        if (!String.IsNullOrEmpty(username) && !String.IsNullOrEmpty(password))
+            connexionReussie = DBService.UserExist (username, password);
+
+        if (connexionReussie)
+            errorToDisplay = "Connexion réussie au compte " + username;
+    }
+
+    protected void CreateAccount()
+    {
+        errorToDisplay = String.Empty;
+        if (!String.IsNullOrEmpty(username) && !String.IsNullOrEmpty(password))
+        {
+            bool userAlreadyExist = DBService.UserExist(username);
+
+            if (!userAlreadyExist)
+                DBService.AddUser(username, password);
+            else
+                errorToDisplay = "Le compte utilisateur " + username + " existe déjà.";
+        }
     }
 }

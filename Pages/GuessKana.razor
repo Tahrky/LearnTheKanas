@@ -15,11 +15,11 @@
         <div class="col-4">
             <div class="row">
                 <div class="col-12 text-center bigKana @fontName">
-                    @if (toGuess.kanaEnum == KanaEnum.Hiragana)
+                    @if (toGuess.kanaType == KanaType.Hiragana)
                     {
                         toGuess.texteAAfficher = toGuess.unicodeHiragana;
                     }
-                    else if (toGuess.kanaEnum == KanaEnum.Katakana)
+                    else if (toGuess.kanaType == KanaType.Katakana)
                     {
                         toGuess.texteAAfficher = toGuess.unicodeKatakana;
                     }
@@ -204,20 +204,20 @@
 
         if (hiragana && katakana)
         {
-            KanaEnum resultEnum = (KanaEnum)rand.Next(2);
+            KanaType resultEnum = (KanaType)rand.Next(2);
 
-            if (resultEnum == KanaEnum.Hiragana)
+            if (resultEnum == KanaType.Hiragana)
                 updateGuess(ref listHiraganaToGuess, resultEnum);
-            else if (resultEnum == KanaEnum.Katakana)
+            else if (resultEnum == KanaType.Katakana)
                 updateGuess(ref listKatakanaToGuess, resultEnum);
         }
         else if (hiragana && !katakana)
-            updateGuess(ref listHiraganaToGuess, KanaEnum.Hiragana);
+            updateGuess(ref listHiraganaToGuess, KanaType.Hiragana);
         else if (katakana && !hiragana)
-            updateGuess(ref listKatakanaToGuess, KanaEnum.Katakana);
+            updateGuess(ref listKatakanaToGuess, KanaType.Katakana);
     }
 
-    public void updateGuess(ref List<Kana> listKana, KanaEnum resultEnum)
+    public void updateGuess(ref List<Kana> listKana, KanaType resultEnum)
     {
         if (listKana.Count <= 0)
             return;
@@ -225,7 +225,7 @@
         Random rand = new Random();
         toGuess = listKana.ElementAt(rand.Next(listKana.Count));
         listKana = listKana.Where(x => x.GetHashCode() != toGuess.GetHashCode()).ToList();
-        toGuess.kanaEnum = resultEnum;
+        toGuess.kanaType = resultEnum;
 
         if (eligibleFonts.Count == 0)
             fontName = "NotoSansJP";
@@ -235,7 +235,7 @@
 
     public void Help()
     {
-
+        
     }
 
     public void Skip()
