@@ -1,9 +1,12 @@
 ﻿@page "/GuessKana"
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @using System.Linq;
 @using ApprentissageKana.Class;
 @using ApprentissageKana.Pages.Composants;
 @using ApprentissageKana.Utils;
+@using ApprentissageKana.Services;
+
+@inject KanaToGuessService KanaService
 
 <div class="row">
     <div class="col-12 pt-3 text-center">
@@ -12,97 +15,15 @@
 
     <div class="row">
         <div class="col-4">
-            <table class="table table-hover">
-                <tr class="notoSansJP text-center">
-                    @foreach (Tuple<String, String> histo in historique.TakeLast(7).Reverse())
-                    {
-                        <div class="@histo.Item2">
-                            <div class="row">
-                                <span class="col-12 align-self-center">
-                                    @histo.Item1
-                                </span>
-                            </div>
-                        </div>
-                    }
-                </tr>
-            </table>
+            <Historique historique="@historique"/>
         </div>
+
         <div class="col-4">
-            <div class="row">
-                <div class="col-12 text-center bigKana @fontName">
-                    @if (toGuess.kanaType == KanaType.Hiragana)
-                    {
-                        toGuess.texteAAfficher = toGuess.unicodeHiragana;
-                    }
-                    else if (toGuess.kanaType == KanaType.Katakana)
-                    {
-                        toGuess.texteAAfficher = toGuess.unicodeKatakana;
-                    }
-                    @(toGuess.texteAAfficher)
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 input-group input-group-lg">
-                    <span class="input-group-text" id="inputGroup-sizing-lg">Kana</span>
-                    <input @onkeyup="PressKey" @bind=kanaToGuess type="text" class="form-control"
-                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-                </div>
-            </div>
-
-            <div class="row pt-3">
-                <div class="col-6">
-                    <div class="input-group input-group-lg">
-                        <span class="input-group-text" id="inputGroup-sizing-lg">Kanas trouvés</span>
-                        <input readonly @bind=compteurDePoint type="text" class="form-control"
-                                aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="input-group input-group-lg">
-                        <span class="input-group-text" id="inputGroup-sizing-lg">Tentatives</span>
-                        <input readonly @bind=compteurTotal type="text" class="form-control"
-                                aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-                    </div>
-                </div>
-            </div>
-
-            @if (lastGuessWas != null)
-            {
-                <div class="row pt-3">
-                    <div class="col-12 pb-0">
-                        <div class="@statusToDisplay h-100 ">
-                            <div class="row h-100">
-                                <span class="col-12 align-self-center">
-                                    @(textToRender = String.Empty)
-                                    @if (status == 1)
-                                    {
-                                        textToRender = "Bravo!";
-                                    }
-                                    else if (status == 2)
-                                    {
-                                        textToRender = "Erreur!";
-                                    }
-                                    @(textToRender += " Le kana précédent était " + lastGuessWas.texteAAfficher + " : " + lastGuessWas.nom + (!String.IsNullOrEmpty(lastGuessWas.nomAlternatif) ? " (" + lastGuessWas.nomAlternatif + ")" : String.Empty))
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-
-            <div class="row pt-3">
-                <div class="col-12 col-md-4">
-                    <button class="btn btn-primary w-100" @onclick="Help">Aide</button>
-                </div>
-                <div class="col-12 col-md-4">
-                    <button class="btn btn-primary w-100" @onclick="Skip">Passer</button>
-                </div>
-                <div class="col-12 col-md-4">
-                    <button class="btn btn-primary w-100" @onclick="Submit">Valider</button>
-                </div>
-            </div>
+            <GuessInterface @bind-listHiraganaToGuess="@listHiraganaToGuess" @bind-listKatakanaToGuess="@listKatakanaToGuess"
+                            @bind-historique="@historique" hiragana="@hiragana" katakana="@katakana" fontName="@fontName" 
+                            eligibleFonts="@eligibleFonts" categories="@categories"/>
         </div>
+
         <div class="col-4">
             <div class="row">
                 <div class="border border-primary border-2 rounded col-6 offset-6">
@@ -125,10 +46,14 @@
             <div class="row pt-3">
                 <div class="border border-primary border-2 rounded col-6 offset-6">
                     <div class="p-3">
-                        <FormCheck Label="Polices faciles" OnChange="() => manageFonts(Difficulte.Facile)" Checked="fontsDifficulty.Any(x => x == Difficulte.Facile)" />
-                        <FormCheck Label="Polices intermédiaires" OnChange="() => manageFonts(Difficulte.Intermediaire)" Checked="fontsDifficulty.Any(x => x == Difficulte.Intermediaire)" />
-                        <FormCheck Label="Polices difficiles" OnChange="() => manageFonts(Difficulte.Difficile)" Checked="fontsDifficulty.Any(x => x == Difficulte.Difficile)" />
-                        <FormCheck Label="Polices exotiques" OnChange="() => manageFonts(Difficulte.Exotique)" Checked="fontsDifficulty.Any(x => x == Difficulte.Exotique)" />
+                        <FormCheck Label="Polices faciles" OnChange="() => manageFonts(Difficulte.Facile)" 
+                            Checked="fontsDifficulty.Any(x => x == Difficulte.Facile)" />
+                        <FormCheck Label="Polices intermédiaires" OnChange="() => manageFonts(Difficulte.Intermediaire)" 
+                            Checked="fontsDifficulty.Any(x => x == Difficulte.Intermediaire)" />
+                        <FormCheck Label="Polices difficiles" OnChange="() => manageFonts(Difficulte.Difficile)" 
+                            Checked="fontsDifficulty.Any(x => x == Difficulte.Difficile)" />
+                        <FormCheck Label="Polices exotiques" OnChange="() => manageFonts(Difficulte.Exotique)" 
+                            Checked="fontsDifficulty.Any(x => x == Difficulte.Exotique)" />
                     </div>
                 </div>
             </div>
@@ -139,20 +64,6 @@
 @code {
     private List<Kana> listHiraganaToGuess = new List<Kana>();
     private List<Kana> listKatakanaToGuess = new List<Kana>();
-    private Kana? lastGuessWas { get; set; }
-    private Kana toGuess = new Kana ();
-
-    // Récupère les informations que l’utilisateur a saisi
-    private string kanaToGuess { get; set; } = String.Empty;
-    private int status { get; set; } = 0;
-    private string statusToDisplay { get; set; } = String.Empty;
-
-    // Permet d’avoir une petite trace des points engrengés sur la session
-    private int compteurDePoint { get; set; }
-    private int compteurTotal { get; set; }
-
-    // Permet d’afficher le texte à l’utilisateur
-    private string textToRender { get; set; } = String.Empty;
 
     private bool hiragana { get; set; } = true;
     private bool katakana { get; set; } = true;
@@ -162,28 +73,29 @@
     private List<bool> categories = new List<bool>();
     private List<Font> eligibleFonts = new List<Font>();
 
-    private List<Tuple<String, String>> historique = new List<Tuple<String, String>>();
+    private List<Tuple<string, string>> historique = new List<Tuple<string, string>>();
 
     protected override async Task OnInitializedAsync()
     {
         categories.AddRange(new List<bool>() {true, false, false, false});
-        listHiraganaToGuess = Kana.initialiseAllKana(categories).Where(x => !String.IsNullOrEmpty(x.unicodeHiragana)).ToList();
-        listKatakanaToGuess = Kana.initialiseAllKana(categories);
-        lastGuessWas = null;
+
+        if (listHiraganaToGuess.Count == 0)
+            listHiraganaToGuess = Kana.initialiseAllKana(categories).Where(x => !string.IsNullOrEmpty(x.unicodeHiragana)).ToList();
+
+        if (listKatakanaToGuess.Count == 0)
+            listKatakanaToGuess = Kana.initialiseAllKana(categories);
 
         fontsDifficulty.Add(Difficulte.Facile);
         fontsDifficulty.Add(Difficulte.Intermediaire);
         eligibleFonts = Globales.AllFonts.Where(x => fontsDifficulty.Any(y => x.difficulte == y)).ToList();
-
-        generateKanaToGuess();
     }
 
     private void manageCategorie(int position)
     {
         categories[position] = !categories[position];
-        listHiraganaToGuess = Kana.initialiseAllKana(categories).Where (x => !String.IsNullOrEmpty(x.unicodeHiragana)).ToList ();
+        listHiraganaToGuess = Kana.initialiseAllKana(categories).Where (x => !string.IsNullOrEmpty(x.unicodeHiragana)).ToList ();
         listKatakanaToGuess = Kana.initialiseAllKana(categories);
-        generateKanaToGuess();
+        //generateKana();
     }
 
     private void manageFonts (Difficulte diff)
@@ -194,119 +106,18 @@
             fontsDifficulty.Add(diff);
 
         eligibleFonts = Globales.AllFonts.Where(x => fontsDifficulty.Any (y => x.difficulte == y)).ToList();
-        generateKanaToGuess();
+        //generateKana();
     }
 
     private void onChangeHiragana()
     {
         hiragana = !hiragana;
-        generateKanaToGuess();
+        //generateKana();
     }
 
     private void onChangeKatakana()
     {
         katakana = !katakana;
-        generateKanaToGuess();
-    }
-
-    private void generateKanaToGuess()
-    {
-        Random rand = new Random();
-
-        if (listHiraganaToGuess.Count == 0)
-            listHiraganaToGuess = Kana.initialiseAllKana(categories).Where(x => !String.IsNullOrEmpty(x.unicodeHiragana)).ToList(); ;
-
-        if (listKatakanaToGuess.Count == 0)
-            listKatakanaToGuess = Kana.initialiseAllKana(categories);
-
-        if (hiragana && katakana)
-        {
-            KanaType resultEnum = (KanaType)rand.Next(2);
-
-            if (resultEnum == KanaType.Hiragana)
-                updateGuess(ref listHiraganaToGuess, resultEnum);
-            else if (resultEnum == KanaType.Katakana)
-                updateGuess(ref listKatakanaToGuess, resultEnum);
-        }
-        else if (hiragana && !katakana)
-            updateGuess(ref listHiraganaToGuess, KanaType.Hiragana);
-        else if (katakana && !hiragana)
-            updateGuess(ref listKatakanaToGuess, KanaType.Katakana);
-    }
-
-    public void updateGuess(ref List<Kana> listKana, KanaType resultEnum)
-    {
-        if (listKana.Count <= 0)
-            return;
-
-        Random rand = new Random();
-        toGuess = listKana.ElementAt(rand.Next(listKana.Count));
-        listKana = listKana.Where(x => x.GetHashCode() != toGuess.GetHashCode()).ToList();
-        toGuess.kanaType = resultEnum;
-
-        if (eligibleFonts.Count == 0)
-            fontName = "NotoSansJP";
-        else
-            fontName = eligibleFonts.ElementAt(rand.Next(eligibleFonts.Count)).nom;
-    }
-
-    public void Help()
-    {
-        
-    }
-
-    public void Skip()
-    {
-        resetInput();
-        lastGuessWas = toGuess;
-        generateKanaToGuess();
-    }
-
-    public void Submit()
-    {
-        if (!String.IsNullOrEmpty(kanaToGuess))
-        {
-            compteurTotal = compteurTotal + 1;
-            if (toGuess.nom.ToLower().Equals(kanaToGuess.ToLower())
-                || (!String.IsNullOrEmpty (toGuess.nomAlternatif)
-                    && toGuess.nomAlternatif.ToLower().Equals(kanaToGuess.ToLower())))
-            {
-                status = 1;
-                statusToDisplay = "alert alert-success";
-                compteurDePoint = compteurDePoint + 1;
-            }
-            else
-            {
-                status = 2;
-                statusToDisplay = "alert alert-danger";
-            }
-
-            historique.Add(new Tuple<String, String> ("Réponse : " + toGuess.texteAAfficher + " (" + toGuess.nom + ") - votre supposition : " + kanaToGuess, statusToDisplay));
-            resetInput(false);
-        }
-        else
-            resetInput();
-
-        lastGuessWas = toGuess;
-        generateKanaToGuess();
-    }
-
-    public void PressKey(KeyboardEventArgs e)
-    {
-        if (e.Code == "Enter" || e.Code == "NumpadEnter")
-            Submit();
-        else if (e.Code == "ArrowRight")
-            Skip();
-    }
-
-    private void resetInput (bool resetAll = true)
-    {
-        kanaToGuess = String.Empty;
-
-        if (resetAll)
-        {
-            status = 0;
-            statusToDisplay = String.Empty;
-        }
+        //generateKana();
     }
 }

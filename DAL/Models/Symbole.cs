@@ -23,7 +23,7 @@ namespace ApprentissageKana.DAL.Models
 
         public Symbole ()
         {
-            categorie = Categorie.Kanji;
+            kanaType = KanaType.Kanji;
             kanaType = null;
         }
     }

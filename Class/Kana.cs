@@ -5,14 +5,14 @@
         Normal = 0,
         Diacritic = 1,
         Combo = 2,
-        ComboDiacritic = 3,
-        Kanji = 4
+        ComboDiacritic = 3
     }
 
     public enum KanaType
     {
         Hiragana = 0,
-        Katakana = 1
+        Katakana = 1,
+        Kanji = 2
     }
 
     public class Kana

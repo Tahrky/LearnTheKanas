@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.Services.AddSingleton<DatabaseService>();
+builder.Services.AddSingleton<KanaToGuessService>();
 
 var app = builder.Build();
 
