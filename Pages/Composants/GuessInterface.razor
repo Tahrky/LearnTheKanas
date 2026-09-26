@@ -1,27 +1,24 @@
-﻿@using Class
-@using ApprentissageKana.Services;
+﻿@using ApprentissageKana.Class
+@using ApprentissageKana.Services
+@implements IDisposable
 
-@inject KanaToGuessService KanaService
+@inject GuessKanaState State
 
 <div class="row">
-    <div class="col-12 text-center bigKana @fontName">
-        @if (toGuess.kanaType == KanaType.Hiragana)
+    <div class="col-12 text-center bigKana @State.FontName">
+        @if (State.ToGuess != null)
         {
-            toGuess.texteAAfficher = toGuess.unicodeHiragana;
+            @KanaText
         }
-        else if (toGuess.kanaType == KanaType.Katakana)
-        {
-            toGuess.texteAAfficher = toGuess.unicodeKatakana;
-        }
-        @(toGuess.texteAAfficher)
     </div>
 </div>
 
 <div class="row">
     <div class="col-12 input-group input-group-lg">
         <span class="input-group-text" id="inputGroup-sizing-lg">Kana</span>
-        <input @onkeyup="PressKey" @bind=kanaToGuess type="text" class="form-control"
-            aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+        <input @onkeydown="PressKey" @bind="State.KanaToGuess" @bind:event="oninput"
+               type="text" class="form-control"
+               aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
     </div>
 </div>
 
@@ -29,15 +26,15 @@
     <div class="col-6">
         <div class="input-group input-group-lg">
             <span class="input-group-text" id="inputGroup-sizing-lg">Kanas trouvés</span>
-            <input readonly @bind=compteurDePoint type="text" class="form-control"
-                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+            <input readonly value="@State.CompteurDePoint" type="text" class="form-control"
+                   aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
         </div>
     </div>
     <div class="col-6">
         <div class="input-group input-group-lg">
             <span class="input-group-text" id="inputGroup-sizing-lg">Tentatives</span>
-            <input readonly @bind=compteurTotal type="text" class="form-control"
-                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+            <input readonly value="@State.CompteurTotal" type="text" class="form-control"
+                   aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
         </div>
     </div>
 </div>
@@ -47,148 +44,47 @@
         <button class="btn btn-primary w-100" @onclick="Help">Aide</button>
     </div>
     <div class="col-12 col-md-4">
-        <button class="btn btn-primary w-100" @onclick="Skip">Passer</button>
+        <button class="btn btn-primary w-100" @onclick="State.Skip">Passer</button>
     </div>
     <div class="col-12 col-md-4">
-        <button class="btn btn-primary w-100" @onclick="Submit">Valider</button>
+        <button class="btn btn-primary w-100" @onclick="State.Submit">Valider</button>
     </div>
 </div>
 
 @code {
-    [Parameter]
-    public List<Kana> listHiraganaToGuess { get; set; }
-    [Parameter]
-    public EventCallback<List<Kana>> listHiraganaToGuessChanged { get; set; }
-    [Parameter]
-    public List<Kana> listKatakanaToGuess { get; set; }
-    [Parameter]
-    public EventCallback<List<Kana>> listKatakanaToGuessChanged { get; set; }
-
-    [Parameter]
-    public bool hiragana { get; set; }
-    [Parameter]
-    public bool katakana { get; set; }
-
-    [Parameter]
-    public string fontName { get; set; }
-    [Parameter]
-    public List<Font> eligibleFonts { get; set; }
-    [Parameter]
-    public List<bool> categories { get; set; }
-    [Parameter]
-    public List<Tuple<string, string>> historique { get; set; }
-    [Parameter]
-    public EventCallback<List<Tuple<string, string>>> historiqueChanged { get; set; }
-
-    // Récupère les informations que l’utilisateur a saisi
-    public string kanaToGuess { get; set; } = string.Empty;
-    public int status { get; set; }
-    public string statusToDisplay { get; set; } = string.Empty;
-
-    // Permet d’avoir une petite trace des points engrengés sur la session
-    public int compteurDePoint { get; set; } = 0;
-    public int compteurTotal { get; set; } = 0;
-    public Kana toGuess { get; set; } = new Kana();
-    public Kana? lastGuessWas { get; set; }
-
-    /// <summary>
-    /// Fonction d’initialisation du module Razor. 
-    /// Génère un Kana pour être deviné par le joueur.
-    /// </summary>
-    protected override async Task OnInitializedAsync()
+    private string KanaText
     {
-        await generateKana();
-    }
-
-
-    public void updateGuess(ref List<Kana> listKana, KanaType resultEnum)
-    {
-        if (listKana.Count <= 0)
-            return;
-
-        Random rand = new Random();
-        toGuess = listKana.ElementAt(rand.Next(listKana.Count));
-        listKana = listKana.Where(x => x.GetHashCode() != toGuess.GetHashCode()).ToList();
-        toGuess.kanaType = resultEnum;
-
-        if (eligibleFonts.Count == 0)
-            fontName = "NotoSansJP";
-        else
-            fontName = eligibleFonts.ElementAt(rand.Next(eligibleFonts.Count)).nom;
-    }
-
-    public void Help()
-    {
-    }
-
-    public async Task Skip()
-    {
-        kanaToGuess = string.Empty;
-        lastGuessWas = toGuess;
-        await generateKana();
-    }
-
-    public async Task Submit()
-    {
-        if (!string.IsNullOrEmpty(kanaToGuess))
+        get
         {
-            compteurTotal = compteurTotal + 1;
-            if (toGuess.nom.ToLower().Equals(kanaToGuess.ToLower())
-                || (!string.IsNullOrEmpty (toGuess.nomAlternatif)
-                    && toGuess.nomAlternatif.ToLower().Equals(kanaToGuess.ToLower())))
-            {
-                status = 1;
-                statusToDisplay = "alert alert-success";
-                compteurDePoint = compteurDePoint + 1;
-            }
-            else
-            {
-                status = 2;
-                statusToDisplay = "alert alert-danger";
-            }
+            if (State.ToGuess.kanaType == KanaType.Hiragana)
+                State.ToGuess.texteAAfficher = State.ToGuess.unicodeHiragana;
+            else if (State.ToGuess.kanaType == KanaType.Katakana)
+                State.ToGuess.texteAAfficher = State.ToGuess.unicodeKatakana;
 
-            historique.Add(new Tuple<string, string>("Réponse : " + toGuess.texteAAfficher + " (" + toGuess.nom 
-                + ") - Proposition : " + kanaToGuess, statusToDisplay));
-            await historiqueChanged.InvokeAsync(historique);
-            kanaToGuess = string.Empty;
+            return State.ToGuess.texteAAfficher;
         }
-
-        lastGuessWas = toGuess;
-        await generateKana();
     }
 
-    /// <summary>
-    /// Gestionnaire d’événements lorsqu’une touche est pressée (pour mettre en place des raccourcis)
-    /// </summary>
-    /// <param name="e">Événement d’appuie sur une touche</param>
-    public async Task PressKey(KeyboardEventArgs e)
+    protected override void OnInitialized()
     {
-        // Valider la saisie
+        State.OnChange += StateHasChanged;
+    }
+
+    private void Help()
+    {
+        // À implémenter
+    }
+
+    private void PressKey(KeyboardEventArgs e)
+    {
         if (e.Code == "Enter" || e.Code == "NumpadEnter")
-            await Submit();
-        // Passer à la proposition suivante
+            State.Submit();
         else if (e.Code == "ArrowRight")
-            await Skip();
+            State.Skip();
     }
 
-    /// <summary>
-    /// Fonction d’aggregation pour éviter la duplication de code lorsqu’on souhaite générer un nouveau Kana à deviner.
-    /// </summary>
-    private async Task generateKana ()
+    public void Dispose()
     {
-        List<Kana> listHiraganaToGuessRef = listHiraganaToGuess;
-        List<Kana> listKatakanaToGuessRef = listKatakanaToGuess;
-        Kana toGuessRef = toGuess;
-        string fontNameRef = fontName;
-
-        KanaService.generateKanaToGuess(ref listHiraganaToGuessRef, ref listKatakanaToGuessRef, hiragana, katakana, 
-            categories, ref toGuessRef, ref fontNameRef, eligibleFonts);
-
-        listHiraganaToGuess = listHiraganaToGuessRef;
-        await listHiraganaToGuessChanged.InvokeAsync(listHiraganaToGuess);
-        listKatakanaToGuess = listKatakanaToGuessRef;
-        await listKatakanaToGuessChanged.InvokeAsync(listKatakanaToGuess);
-        toGuess = toGuessRef;
-        fontName = fontNameRef;
+        State.OnChange -= StateHasChanged;
     }
 }

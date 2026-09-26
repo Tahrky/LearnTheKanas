@@ -1,4 +1,7 @@
-﻿@using Class
+﻿@using ApprentissageKana.Services
+@implements IDisposable
+
+@inject GuessKanaState State
 
 <div class="row text-center">
     <div class="col-12 align-self-center">Historique</div>
@@ -6,7 +9,7 @@
 
 <table class="table table-hover">
     <tr class="notoSansJP text-center">
-        @foreach (Tuple<String, String> histo in historique.TakeLast(7).Reverse())
+        @foreach (Tuple<String, String> histo in @State.Historique.TakeLast(7).Reverse())
         {
             <div class="@histo.Item2">
                 <div class="row">
@@ -20,6 +23,13 @@
 </table>
 
 @code {
-    [Parameter]
-    public List<Tuple<String, String>> historique { get; set; }
+    protected override void OnInitialized()
+    {
+        State.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        State.OnChange -= StateHasChanged;
+    }
 }

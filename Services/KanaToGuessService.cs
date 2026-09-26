@@ -7,15 +7,8 @@ namespace ApprentissageKana.Services
     {
         /// <summary>
         /// Algorithme permettant de choisir le prochain caractère à deviner.
+        /// Réinitialise les listes si elles sont vides.
         /// </summary>
-        /// <param name="listHiraganaToGuess"></param>
-        /// <param name="listKatakanaToGuess"></param>
-        /// <param name="hiragana"></param>
-        /// <param name="katakana"></param>
-        /// <param name="categories"></param>
-        /// <param name="toGuess"></param>
-        /// <param name="fontName"></param>
-        /// <param name="eligibleFonts"></param>
         public void generateKanaToGuess(ref List<Kana> listHiraganaToGuess, ref List<Kana> listKatakanaToGuess, bool hiragana, 
             bool katakana, List<bool> categories, ref Kana toGuess, ref string fontName, List<Font> eligibleFonts)
         {
@@ -27,8 +20,6 @@ namespace ApprentissageKana.Services
             // Pas besoin de trier les katakanas car tous les Hiragana existent en Katakana, et il y en a même quelques uns en plus.
             if (listKatakanaToGuess.Count == 0)
                 listKatakanaToGuess = Kana.initialiseAllKana(categories);
-
-            Console.WriteLine("Hiragana : " + listHiraganaToGuess.Count());
 
             if (hiragana && katakana)
             {

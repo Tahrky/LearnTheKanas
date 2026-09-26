@@ -1,12 +1,9 @@
 ﻿@page "/GuessKana"
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
-@using System.Linq;
-@using ApprentissageKana.Class;
-@using ApprentissageKana.Pages.Composants;
-@using ApprentissageKana.Utils;
-@using ApprentissageKana.Services;
+@using ApprentissageKana.Services
+@implements IDisposable
 
-@inject KanaToGuessService KanaService
+@inject GuessKanaState State
 
 <div class="row">
     <div class="col-12 pt-3 text-center">
@@ -15,109 +12,25 @@
 
     <div class="row">
         <div class="col-4">
-            <Historique historique="@historique"/>
+            <Historique/>
         </div>
-
         <div class="col-4">
-            <GuessInterface @bind-listHiraganaToGuess="@listHiraganaToGuess" @bind-listKatakanaToGuess="@listKatakanaToGuess"
-                            @bind-historique="@historique" hiragana="@hiragana" katakana="@katakana" fontName="@fontName" 
-                            eligibleFonts="@eligibleFonts" categories="@categories"/>
+            <GuessInterface />
         </div>
-
         <div class="col-4">
-            <div class="row">
-                <div class="border border-primary border-2 rounded col-6 offset-6">
-                    <div class="p-3">
-                        <FormCheck Label="Hiragana" OnChange="@onChangeHiragana" Checked="@hiragana" />
-                        <FormCheck Label="Katakana" OnChange="@onChangeKatakana" Checked="@katakana" />
-                    </div>
-                </div>
-            </div>
-            <div class="row pt-3">
-                <div class="border border-primary border-2 rounded col-6 offset-6">
-                    <div class="p-3">
-                        <FormCheck Label="Kanas classiques" OnChange="() => manageCategorie(0)" Checked="categories[0]" />
-                        <FormCheck Label="Kanas altérés" OnChange="() => manageCategorie(1)" Checked="categories[1]" />
-                        <FormCheck Label="Kanas combinés" OnChange="() => manageCategorie(2)" Checked="categories[2]" />
-                        <FormCheck Label="Kanas combinés altérés" OnChange="() => manageCategorie(3)" Checked="categories[3]" />
-                    </div>
-                </div>
-            </div>
-            <div class="row pt-3">
-                <div class="border border-primary border-2 rounded col-6 offset-6">
-                    <div class="p-3">
-                        <FormCheck Label="Polices faciles" OnChange="() => manageFonts(Difficulte.Facile)" 
-                            Checked="fontsDifficulty.Any(x => x == Difficulte.Facile)" />
-                        <FormCheck Label="Polices intermédiaires" OnChange="() => manageFonts(Difficulte.Intermediaire)" 
-                            Checked="fontsDifficulty.Any(x => x == Difficulte.Intermediaire)" />
-                        <FormCheck Label="Polices difficiles" OnChange="() => manageFonts(Difficulte.Difficile)" 
-                            Checked="fontsDifficulty.Any(x => x == Difficulte.Difficile)" />
-                        <FormCheck Label="Polices exotiques" OnChange="() => manageFonts(Difficulte.Exotique)" 
-                            Checked="fontsDifficulty.Any(x => x == Difficulte.Exotique)" />
-                    </div>
-                </div>
-            </div>
+            <MenuGuess />
         </div>
     </div>
 </div>
 
 @code {
-    private List<Kana> listHiraganaToGuess = new List<Kana>();
-    private List<Kana> listKatakanaToGuess = new List<Kana>();
-
-    private bool hiragana { get; set; } = true;
-    private bool katakana { get; set; } = true;
-
-    private string fontName { get; set; } = "NotoSansJP";
-    private List<Difficulte> fontsDifficulty = new List<Difficulte>();
-    private List<bool> categories = new List<bool>();
-    private List<Font> eligibleFonts = new List<Font>();
-
-    private List<Tuple<string, string>> historique = new List<Tuple<string, string>>();
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        categories.AddRange(new List<bool>() {true, false, false, false});
-
-        if (listHiraganaToGuess.Count == 0)
-            listHiraganaToGuess = Kana.initialiseAllKana(categories).Where(x => !string.IsNullOrEmpty(x.unicodeHiragana)).ToList();
-
-        if (listKatakanaToGuess.Count == 0)
-            listKatakanaToGuess = Kana.initialiseAllKana(categories);
-
-        fontsDifficulty.Add(Difficulte.Facile);
-        fontsDifficulty.Add(Difficulte.Intermediaire);
-        eligibleFonts = Globales.AllFonts.Where(x => fontsDifficulty.Any(y => x.difficulte == y)).ToList();
+        State.OnChange += StateHasChanged;
     }
 
-    private void manageCategorie(int position)
+    public void Dispose()
     {
-        categories[position] = !categories[position];
-        listHiraganaToGuess = Kana.initialiseAllKana(categories).Where (x => !string.IsNullOrEmpty(x.unicodeHiragana)).ToList ();
-        listKatakanaToGuess = Kana.initialiseAllKana(categories);
-        //generateKana();
-    }
-
-    private void manageFonts (Difficulte diff)
-    {
-        if (fontsDifficulty.Any(x => x == diff))
-            fontsDifficulty.Remove(diff);
-        else
-            fontsDifficulty.Add(diff);
-
-        eligibleFonts = Globales.AllFonts.Where(x => fontsDifficulty.Any (y => x.difficulte == y)).ToList();
-        //generateKana();
-    }
-
-    private void onChangeHiragana()
-    {
-        hiragana = !hiragana;
-        //generateKana();
-    }
-
-    private void onChangeKatakana()
-    {
-        katakana = !katakana;
-        //generateKana();
+        State.OnChange -= StateHasChanged;
     }
 }

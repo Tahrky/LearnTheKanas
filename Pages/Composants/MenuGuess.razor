@@ -1,0 +1,50 @@
+﻿@using ApprentissageKana.Class
+@using ApprentissageKana.Services
+@implements IDisposable
+
+@inject GuessKanaState State
+
+<div class="row">
+    <div class="border border-primary border-2 rounded col-6 offset-6">
+        <div class="p-3">
+            <FormCheck Label="Hiragana" OnChange="State.ToggleHiragana" Checked="State.Hiragana" />
+            <FormCheck Label="Katakana" OnChange="State.ToggleKatakana" Checked="State.Katakana" />
+        </div>
+    </div>
+</div>
+<div class="row pt-3">
+    <div class="border border-primary border-2 rounded col-6 offset-6">
+        <div class="p-3">
+            <FormCheck Label="Kanas classiques" OnChange="() => State.ToggleCategorie(0)" Checked="State.Categories[0]" />
+            <FormCheck Label="Kanas altérés" OnChange="() => State.ToggleCategorie(1)" Checked="State.Categories[1]" />
+            <FormCheck Label="Kanas combinés" OnChange="() => State.ToggleCategorie(2)" Checked="State.Categories[2]" />
+            <FormCheck Label="Kanas combinés altérés" OnChange="() => State.ToggleCategorie(3)" Checked="State.Categories[3]" />
+        </div>
+    </div>
+</div>
+<div class="row pt-3">
+    <div class="border border-primary border-2 rounded col-6 offset-6">
+        <div class="p-3">
+            <FormCheck Label="Polices faciles" OnChange="() => State.ToggleFontDifficulty(Difficulte.Facile)"
+                       Checked="State.FontsDifficulty.Contains(Difficulte.Facile)" />
+            <FormCheck Label="Polices intermédiaires" OnChange="() => State.ToggleFontDifficulty(Difficulte.Intermediaire)"
+                       Checked="State.FontsDifficulty.Contains(Difficulte.Intermediaire)" />
+            <FormCheck Label="Polices difficiles" OnChange="() => State.ToggleFontDifficulty(Difficulte.Difficile)"
+                       Checked="State.FontsDifficulty.Contains(Difficulte.Difficile)" />
+            <FormCheck Label="Polices exotiques" OnChange="() => State.ToggleFontDifficulty(Difficulte.Exotique)"
+                       Checked="State.FontsDifficulty.Contains(Difficulte.Exotique)" />
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        State.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        State.OnChange -= StateHasChanged;
+    }
+}
