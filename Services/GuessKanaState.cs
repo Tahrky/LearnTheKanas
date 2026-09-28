@@ -6,35 +6,18 @@ namespace ApprentissageKana.Services
     public sealed class GuessKanaState
     {
         private readonly KanaToGuessService _kanaToGuessService;
-
-        private List<Kana> _listHiraganaToGuess = new ();
-        private List<Kana> _listKatakanaToGuess = new ();
+        private List<Kana> _listHiraganaToGuess = new(), _listKatakanaToGuess = new ();
         private Kana _toGuess = new ();
-
-        public List<Kana> ListHiraganaToGuess => _listHiraganaToGuess;
-        public List<Kana> ListKatakanaToGuess => _listKatakanaToGuess;
+        private string _fontName  = "NotoSansJP";
         public List<Tuple<string, string>> Historique { get; } = new ();
-
         // Symbole à deviner
         public Kana ToGuess => _toGuess;
-        // Proposition du joueur
-        public string KanaToGuess { get; set; } = string.Empty;
-
-        public bool Hiragana { get; private set; } = true;
-        public bool Katakana { get; private set; } = true;
-
-        public List<Difficulte> FontsDifficulty { get; } = new ()
-        {
-            Difficulte.Facile,
-            Difficulte.Intermediaire
-        };
-        public string FontName { get; private set; } = "NotoSansJP";
+        public string KanaToGuess = string.Empty, FontName = "NotoSansJP";
+        public bool Hiragana = true, Katakana = true;
+        public List<Difficulte> FontsDifficulty { get; } = new () { Difficulte.Facile, Difficulte.Intermediaire };
         public List<bool> Categories { get; } = new() { true, false, false, false };
         public List<Font> EligibleFonts { get; private set; } = new();
-
-        public int CompteurDePoint { get; private set; }
-        public int CompteurTotal { get; private set; }
-
+        public int CompteurDePoint, CompteurTotal;
         public event Action? OnChange;
 
         public GuessKanaState(KanaToGuessService kanaToGuessService)
@@ -47,10 +30,7 @@ namespace ApprentissageKana.Services
 
         public void GenerateKana()
         {
-            if (!Hiragana && !Katakana) 
-                return;
-
-            if (EligibleFonts.Count == 0) 
+            if ((!Hiragana && !Katakana) || EligibleFonts.Count == 0) 
                 return;
 
             _kanaToGuessService.generateKanaToGuess(ref _listHiraganaToGuess, ref _listKatakanaToGuess,
@@ -58,25 +38,11 @@ namespace ApprentissageKana.Services
 
             NotifyStateChanged();
         }
-
-        // Champ privé nécessaire pour le "ref" ci-dessus
-        private string _fontName = "NotoSansJP";
-
-        public void RefreshKanaLists()
-        {
-            RefreshKanaListsInternal();
-            NotifyStateChanged();
-        }
-
-        public void RefreshEligibleFonts()
-        {
-            RefreshEligibleFontsInternal();
-            NotifyStateChanged();
-        }
-
+        
         public void ToggleCategorie(int position)
         {
-            if (position < 0 || position >= Categories.Count) return;
+            if (position < 0 || position >= Categories.Count) 
+                return;
 
             Categories[position] = !Categories[position];
             RefreshKanaListsInternal();
@@ -92,15 +58,13 @@ namespace ApprentissageKana.Services
             GenerateKana();
         }
 
-        public void ToggleHiragana()
+        public void ToggleKana(bool kana)
         {
-            Hiragana = !Hiragana;
-            GenerateKana();
-        }
+            if (kana) 
+                Hiragana = !Hiragana; 
+            else 
+                Katakana = !Katakana;
 
-        public void ToggleKatakana()
-        {
-            Katakana = !Katakana;
             GenerateKana();
         }
 
@@ -109,24 +73,18 @@ namespace ApprentissageKana.Services
             if (!string.IsNullOrEmpty(KanaToGuess))
             {
                 CompteurTotal++;
-                string statusToDisplay;
-
+                string statusToDisplay = "alert alert-success";
                 bool isCorrect = _toGuess.nom.ToLower().Equals(KanaToGuess.ToLower())
-                                    || (!string.IsNullOrEmpty(_toGuess.nomAlternatif)
-                                         && _toGuess.nomAlternatif.ToLower()
-                                         .Equals(KanaToGuess.ToLower()));
+                                || (!string.IsNullOrEmpty(_toGuess.nomAlternatif)
+                                    && _toGuess.nomAlternatif.ToLower().Equals(KanaToGuess.ToLower()));
 
                 if (isCorrect)
-                {
-                    statusToDisplay = "alert alert-success";
                     CompteurDePoint++;
-                }
                 else
                     statusToDisplay = "alert alert-danger";
 
                 Historique.Add(new Tuple<string, string>( "Réponse : " + _toGuess.texteAAfficher 
                     + " (" + _toGuess.nom + ") - Proposition : " + KanaToGuess, statusToDisplay));
-
                 KanaToGuess = string.Empty;
             }
 
@@ -145,21 +103,12 @@ namespace ApprentissageKana.Services
         private void RefreshKanaListsInternal()
         {
             List<Kana> allKana = Kana.initialiseAllKana(Categories);
-
-            _listHiraganaToGuess = allKana
-                .Where(k => !string.IsNullOrEmpty(k.unicodeHiragana))
-                .ToList();
-
+            // Il existe certains symboles en Katakana qui n’existe pas en Hiragana, c’est pour ça qu’il faut trier.
+            _listHiraganaToGuess = allKana.Where(k => !string.IsNullOrEmpty(k.unicodeHiragana)).ToList();
             _listKatakanaToGuess = allKana;
         }
 
-        private void RefreshEligibleFontsInternal()
-        {
-            EligibleFonts = Globales.AllFonts
-                .Where(f => FontsDifficulty.Contains(f.difficulte))
-                .ToList();
-        }
-
+        private void RefreshEligibleFontsInternal() => EligibleFonts = Globales.AllFonts.Where(f => FontsDifficulty.Contains(f.difficulte)).ToList();
         private void NotifyStateChanged() => OnChange?.Invoke();
     }
 }

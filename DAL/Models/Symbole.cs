@@ -24,7 +24,7 @@ namespace ApprentissageKana.DAL.Models
         public Symbole ()
         {
             kanaType = KanaType.Kanji;
-            kanaType = null;
+            categorie = Categorie.Normal;
         }
     }
 }

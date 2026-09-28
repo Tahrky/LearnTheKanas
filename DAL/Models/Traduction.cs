@@ -14,6 +14,9 @@ namespace ApprentissageKana.DAL.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public string nom { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string caractereUnicode { get; set; }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]

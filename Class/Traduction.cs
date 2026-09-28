@@ -26,7 +26,6 @@
     {
         public TexteATraduire reference { get; set; }
         public string traduction { get; set; }
-
     }
 
     public static class TraductionManager

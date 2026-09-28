@@ -729,6 +729,7 @@
                 aideKatakana = "",
             };
 
+            // do est un mot clé en C# qui ne peut être utilisé comme nom de variable
             Kana doKana = new Kana
             {
                 nom = "do",
@@ -1164,7 +1165,7 @@
             Kana dya = new Kana
             {
                 nom = "dya",
-                nomAlternatif = "jya",
+                nomAlternatif = "dja",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = dji.unicodeHiragana + ya.unicodeHiragana,
@@ -1176,7 +1177,7 @@
             Kana dyu = new Kana
             {
                 nom = "dyu",
-                nomAlternatif = "jyu",
+                nomAlternatif = "dju",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = dji.unicodeHiragana + yu.unicodeHiragana,
@@ -1188,7 +1189,7 @@
             Kana dyo = new Kana
             {
                 nom = "dyo",
-                nomAlternatif = "jyo",
+                nomAlternatif = "djo",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = dji.unicodeHiragana + yo.unicodeHiragana,
