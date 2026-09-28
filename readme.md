@@ -1,7 +1,10 @@
-ï»¿Comment faire Ã©voluer la base de donnÃ©es
+# LearnTheKanas
+A website to test your Japanese Kanas knowledge.
 
-#CrÃ©er une migration nommÃ©e
+Comment faire évoluer la base de données
+
+#Créer une migration nommée
 Add-Migration NomDeLaMigration
 
-#Jouer les migrations sur la base de donnÃ©es
+#Jouer les migrations sur la base de données
 Update-Database
