@@ -9,10 +9,12 @@ namespace ApprentissageKana.Services
         private List<Kana> _listHiraganaToGuess = new(), _listKatakanaToGuess = new ();
         private Kana _toGuess = new ();
         private string _fontName  = "NotoSansJP";
-        public List<Tuple<string, string>> Historique { get; } = new ();
+        public List<Tuple<string, string>> Historique { get; set; } = new ();
         // Symbole à deviner
         public Kana ToGuess => _toGuess;
-        public string KanaToGuess = string.Empty, FontName = "NotoSansJP";
+        // Proposition du joueur
+        public string KanaToGuess = string.Empty;
+        public string FontName = "NotoSansJP";
         public bool Hiragana = true, Katakana = true;
         public List<Difficulte> FontsDifficulty { get; } = new () { Difficulte.Facile, Difficulte.Intermediaire };
         public List<bool> Categories { get; } = new() { true, false, false, false };
@@ -96,7 +98,6 @@ namespace ApprentissageKana.Services
             KanaToGuess = string.Empty;
             Historique.Add(new Tuple<string, string>( "Réponse : " + _toGuess.texteAAfficher 
                 + " (" + _toGuess.nom + ")", "alert alert-secondary"));
-
             GenerateKana();
         }
 
@@ -106,6 +107,11 @@ namespace ApprentissageKana.Services
             // Il existe certains symboles en Katakana qui n’existe pas en Hiragana, c’est pour ça qu’il faut trier.
             _listHiraganaToGuess = allKana.Where(k => !string.IsNullOrEmpty(k.unicodeHiragana)).ToList();
             _listKatakanaToGuess = allKana;
+        }
+
+        public void ResetHistorique()
+        {
+            Historique = new List<Tuple<string, string>>();
         }
 
         private void RefreshEligibleFontsInternal() => EligibleFonts = Globales.AllFonts.Where(f => FontsDifficulty.Contains(f.difficulte)).ToList();

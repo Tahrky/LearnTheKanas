@@ -9,6 +9,7 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.Services.AddSingleton<DatabaseService>();
 builder.Services.AddSingleton<KanaToGuessService>();
 builder.Services.AddScoped<GuessKanaState>();
+builder.Services.AddScoped<CountTimerState>();
 
 var app = builder.Build();
 

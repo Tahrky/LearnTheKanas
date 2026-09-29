@@ -1,0 +1,36 @@
+﻿@page "/PlayKana"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@using ApprentissageKana.Services
+@implements IDisposable
+
+@inject GuessKanaState State
+
+<div class="row">
+    <div class="col-12 pt-3 text-center">
+        <h1>Devine les kanas</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-4">
+            <Historique />
+        </div>
+        <div class="col-4">
+            <GameGuess />
+        </div>
+        <div class="col-4">
+            <MenuGuess />
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        State.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        State.OnChange -= StateHasChanged;
+    }
+}

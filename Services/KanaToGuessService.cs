@@ -1,5 +1,4 @@
 ﻿using ApprentissageKana.Class;
-using Microsoft.AspNetCore.Components;
 
 namespace ApprentissageKana.Services
 {
@@ -17,7 +16,7 @@ namespace ApprentissageKana.Services
             if (listHiraganaToGuess.Count == 0)
                 listHiraganaToGuess = Kana.initialiseAllKana(categories).Where(x => !String.IsNullOrEmpty(x.unicodeHiragana)).ToList();
 
-            // Pas besoin de trier les katakanas car tous les Hiragana existent en Katakana, et il y en a même quelques uns en plus.
+            // Il y a plus de Katakana que d’Hiragana
             if (listKatakanaToGuess.Count == 0)
                 listKatakanaToGuess = Kana.initialiseAllKana(categories);
 
@@ -39,11 +38,6 @@ namespace ApprentissageKana.Services
         /// <summary>
         /// Fonction qui définit le prochain caractère à deviner dans la liste.
         /// </summary>
-        /// <param name="listKana"></param>
-        /// <param name="resultEnum"></param>
-        /// <param name="toGuess"></param>
-        /// <param name="fontName"></param>
-        /// <param name="eligibleFonts"></param>
         public void updateGuess(ref List<Kana> listKana, KanaType resultEnum, ref Kana toGuess, ref string fontName, List<Font> eligibleFonts)
         {
             if (listKana.Count <= 0)

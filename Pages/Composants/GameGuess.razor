@@ -7,9 +7,23 @@
 
 <div class="row">
     <div class="col-12 text-center bigKana @State.FontName">
-        @if (State.ToGuess != null)
+        @if (State.ToGuess != null && disableButtonDemarrer)
         {
             @KanaText
+        }
+
+        @if (displayTimer && disableButtonValider)
+        {
+            <div>@State.CompteurDePoint / @State.CompteurTotal</div>
+        }
+    </div>
+</div>
+    
+<div class="row">
+    <div class="col-12 text-center @styleTimer @State.FontName">
+        @if (displayTimer)
+        {
+            @TimerState.AfficherTemps();
         }
     </div>
 </div>
@@ -18,7 +32,7 @@
     <div class="col-12 input-group input-group-lg">
         <span class="input-group-text" id="inputGroup-sizing-lg">Kana</span>
         <input @onkeydown="PressKey" @bind="State.KanaToGuess" @bind:event="oninput"
-            type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+               type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
     </div>
 </div>
 
@@ -40,19 +54,20 @@
 </div>
 
 <div class="row pt-3">
-    <div class="col-12 col-md-4">
-        <button class="btn btn-primary w-100" @onclick="Help">Aide</button>
+    <div class="col-12 col-md-6">
+        <button class="btn btn-primary w-100" @onclick="StartGame" disabled="@disableButtonDemarrer">Démarrer</button>
     </div>
-    <div class="col-12 col-md-4">
-        <button class="btn btn-primary w-100" @onclick="State.Skip">Passer</button>
-    </div>
-    <div class="col-12 col-md-4">
-        <button class="btn btn-primary w-100" @onclick="State.Submit">Valider</button>
+    <div class="col-12 col-md-6">
+        <button class="btn btn-primary w-100" @onclick="State.Submit" disabled="@disableButtonValider">Valider</button>
     </div>
 </div>
 
 @code {
     private bool displayTimer = false;
+    private bool disableButtonDemarrer = false;
+    private bool disableButtonValider = true;
+    private string styleTimer = "normalFontSize";
+
     private string KanaText
     {
         get
@@ -72,17 +87,36 @@
         TimerState.OnChange += HandleStateChanged;
     }
 
-    private void Help()
+    private void StartGame()
     {
-        // A implémenter
+        displayTimer = true;
+        disableButtonDemarrer = true;
+        disableButtonValider = false;
+        State.CompteurDePoint = 0;
+        State.CompteurTotal = 0;
+        TimerState.DemarrerChrono();
+        styleTimer = "normalFontSize";
+    }
+
+    private void StopGame()
+    {
+        disableButtonDemarrer = false;
+        disableButtonValider = true;
+        TimerState.ArreterChrono();
+        State.ResetHistorique();
+        styleTimer = "bigFontSize";
     }
 
     private void PressKey(KeyboardEventArgs e)
     {
-        if (e.Code == "Enter" || e.Code == "NumpadEnter")
-            State.Submit();
-        else if (e.Code == "ArrowRight")
-            State.Skip();
+        if (!disableButtonValider)
+        {
+            if (e.Code == "Enter" || e.Code == "NumpadEnter")
+                State.Submit();
+
+            if (State.CompteurTotal == 30 && displayTimer)
+                StopGame();
+        }
     }
 
     private void HandleStateChanged()
