@@ -14,7 +14,7 @@ namespace ApprentissageKana.Services
         public Kana ToGuess => _toGuess;
         // Proposition du joueur
         public string KanaToGuess = string.Empty;
-        public string FontName = "NotoSansJP";
+        public string FontName => _fontName;
         public bool Hiragana = true, Katakana = true;
         public List<Difficulte> FontsDifficulty { get; } = new () { Difficulte.Facile, Difficulte.Intermediaire };
         public List<bool> Categories { get; } = new() { true, false, false, false };
