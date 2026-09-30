@@ -171,6 +171,7 @@
             Kana shi = new Kana
             {
                 nom = "shi",
+                nomAlternatif = "si",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = "\u3057",
@@ -226,6 +227,7 @@
             Kana chi = new Kana
             {
                 nom = "chi",
+                nomAlternatif = "ti",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = "\u3061",
@@ -237,6 +239,7 @@
             Kana tsu = new Kana
             {
                 nom = "tsu",
+                nomAlternatif = "tu",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = "\u3064",
@@ -347,6 +350,7 @@
             Kana fu = new Kana
             {
                 nom = "fu",
+                nomAlternatif = "hu",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = "\u3075",
@@ -555,7 +559,7 @@
 
             Kana diacriticDakuten = new Kana
             {
-                nom = "dakuten ",
+                nom = "dakuten",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = "\u3099",
@@ -644,6 +648,7 @@
             Kana ji = new Kana
             {
                 nom = "ji",
+                nomAlternatif = "zi",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = shi.unicodeHiragana + diacriticDakuten.unicodeHiragana,
@@ -698,7 +703,8 @@
 
             Kana dji = new Kana
             {
-                nom = "dji",
+                nom = "di",
+                nomAlternatif = "ji",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = chi.unicodeHiragana + diacriticDakuten.unicodeHiragana,
@@ -709,7 +715,8 @@
 
             Kana dzu = new Kana
             {
-                nom = "dzu",
+                nom = "du",
+                nomAlternatif = "zu",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = tsu.unicodeHiragana + diacriticDakuten.unicodeHiragana,
@@ -898,6 +905,7 @@
             Kana sha = new Kana
             {
                 nom = "sha",
+                nomAlternatif = "sya",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = shi.unicodeHiragana + ya.unicodeHiragana,
@@ -909,6 +917,7 @@
             Kana shu = new Kana
             {
                 nom = "shu",
+                nomAlternatif = "syu",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = shi.unicodeHiragana + yu.unicodeHiragana,
@@ -920,6 +929,7 @@
             Kana sho = new Kana
             {
                 nom = "sho",
+                nomAlternatif = "syo",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = shi.unicodeHiragana + yo.unicodeHiragana,
@@ -931,6 +941,7 @@
             Kana cha = new Kana
             {
                 nom = "cha",
+                nomAlternatif = "cya",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = chi.unicodeHiragana + ya.unicodeHiragana,
@@ -942,6 +953,7 @@
             Kana chu = new Kana
             {
                 nom = "chu",
+                nomAlternatif = "cyu",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = chi.unicodeHiragana + yu.unicodeHiragana,
@@ -953,6 +965,7 @@
             Kana cho = new Kana
             {
                 nom = "cho",
+                nomAlternatif = "cyo",
                 poids = 1,
                 categorie = 0,
                 unicodeHiragana = chi.unicodeHiragana + yo.unicodeHiragana,
