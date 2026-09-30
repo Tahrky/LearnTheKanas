@@ -14,7 +14,7 @@ namespace ApprentissageKana.Utils
             new Font("HachiMaruPop", Difficulte.Intermediaire),
             new Font("KaiseiHarunoUmi", Difficulte.Intermediaire),
             new Font("ZenKurenaido", Difficulte.Intermediaire),
-            new Font("KiwiMaru", Difficulte.Difficile),
+            new Font("KiwiMaru", Difficulte.Intermediaire),
             new Font("NewTegomin", Difficulte.Difficile),
             new Font("YujiBoku", Difficulte.Difficile),
             new Font("YujiMai", Difficulte.Difficile),
