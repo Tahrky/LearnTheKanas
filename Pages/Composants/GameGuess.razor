@@ -8,23 +8,17 @@
 <div class="row">
     <div class="col-12 text-center bigKana @State.FontName">
         @if (State.ToGuess != null && disableButtonDemarrer)
-        {
-            @KanaText
-        }
+        { @KanaText }
 
         @if (displayTimer && disableButtonValider)
-        {
-            <div>@State.CompteurDePoint / @State.CompteurTotal</div>
-        }
+        { <div>@State.CompteurDePoint / @State.CompteurTotal</div> }
     </div>
 </div>
     
 <div class="row">
     <div class="col-12 text-center @styleTimer @State.FontName">
         @if (displayTimer)
-        {
-            @TimerState.AfficherTemps();
-        }
+        { @TimerState.AfficherTemps(); }
     </div>
 </div>
 
@@ -33,6 +27,14 @@
         <span class="input-group-text" id="inputGroup-sizing-lg">Kana</span>
         <input @onkeydown="PressKey" @bind="State.KanaToGuess" @bind:event="oninput"
                type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 input-group input-group-lg">
+        <span class="input-group-text" id="inputGroup-sizing-lg">Nombre de tentatives</span>
+        <input @bind="nombreDeProposition" @bind:event="oninput" type="text" class="form-control" 
+               aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" disabled="@disableButtonDemarrer">
     </div>
 </div>
 
@@ -66,6 +68,8 @@
     private bool displayTimer = false;
     private bool disableButtonDemarrer = false;
     private bool disableButtonValider = true;
+    private int nombreDeProposition = 30;
+
     private string styleTimer = "normalFontSize";
 
     private string KanaText
@@ -114,7 +118,7 @@
             if (e.Code == "Enter" || e.Code == "NumpadEnter")
                 State.Submit();
 
-            if (State.CompteurTotal == 30 && displayTimer)
+            if (State.CompteurTotal == nombreDeProposition && displayTimer)
                 StopGame();
         }
     }
