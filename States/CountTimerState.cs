@@ -1,4 +1,4 @@
-﻿namespace ApprentissageKana.Services
+﻿namespace ApprentissageKana.States
 {
     public class CountTimerState
     {

@@ -1,20 +1,16 @@
 using ApprentissageKana.Services;
 using ApprentissageKana.Shared;
-using ApprentissageKana.Utils;
+using ApprentissageKana.States;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
-builder.Services.AddSingleton<DatabaseService>();
 builder.Services.AddSingleton<KanaToGuessService>();
 builder.Services.AddScoped<GuessKanaState>();
 builder.Services.AddScoped<CountTimerState>();
 
 var app = builder.Build();
-
-Configuration.DefaultConnection = builder.Configuration.GetSection("ConnectionSettings:DefaultConnection").Value;
-Configuration.GrainDeSable = builder.Configuration.GetSection("ConnectionSettings:GrainDeSable").Value;
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

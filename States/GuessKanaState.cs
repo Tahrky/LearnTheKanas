@@ -1,7 +1,8 @@
 ﻿using ApprentissageKana.Class;
 using ApprentissageKana.Utils;
+using ApprentissageKana.Services;
 
-namespace ApprentissageKana.Services
+namespace ApprentissageKana.States
 {
     public sealed class GuessKanaState
     {
